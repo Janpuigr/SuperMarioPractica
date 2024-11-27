@@ -77,6 +77,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Start()
     {
+        m_Animator.fireEvents = false;
         hasJumped = false;
         m_JumpingComboCounter = 1;
         m_LeftHandPunchHitCollider.gameObject.SetActive(false);
@@ -90,6 +91,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Update()
     {
+
         m_JumpComboAvailableTime += Time.deltaTime;
         Debug.Log(m_JumpComboAvailableTime);    
         Vector3 l_Forward = m_Camera.transform.forward;
