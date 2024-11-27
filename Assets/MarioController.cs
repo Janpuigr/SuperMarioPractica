@@ -77,7 +77,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Start()
     {
-        m_JumpVerticalSpeed = 12.0f;
         hasJumped = false;
         m_JumpingComboCounter = 1;
         m_LeftHandPunchHitCollider.gameObject.SetActive(false);
@@ -219,7 +218,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     void Jump()
     {
         m_Animator.SetTrigger("Jump");
-        m_Animator.SetInteger("JumpsCombo", 3);
+        m_Animator.SetInteger("JumpsCombo", 1); //CAMBIAR INT PARA CAMBIAR LA ANIMACION DE SALTO
         StartCoroutine(ExecuteJump());
     }
 
