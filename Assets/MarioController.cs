@@ -56,6 +56,12 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public float m_MaxAngleNeededToKillGoomba = 15.0f;
     public float m_MinVerticalSpeedTokillGoomba = -1.0f;
 
+    public float m_JumpComboAvailableTime = 0.0f;
+    int m_JumpingComboCounter = 0;
+    float m_lastJumpTime;
+    bool hasJumped;
+
+
     private bool m_IsDead = false; 
     public Transform m_RespawnPoint; 
 
@@ -71,17 +77,21 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Start()
     {
+        hasJumped = false;
+        m_JumpingComboCounter = 1;
         m_LeftHandPunchHitCollider.gameObject.SetActive(false);
         m_RightHandPunchHitCollider.gameObject.SetActive(false);
         m_RightFootKickHitCollider.gameObject.SetActive(false);
         GameManager.GetGameManager().AddRestartGameElement(this);
         m_StartPosition = transform.position;
         m_StartRotation = transform.rotation;
+        m_JumpComboAvailableTime = 5.0f;
     }
 
     void Update()
     {
-        
+        m_JumpComboAvailableTime += Time.deltaTime;
+        Debug.Log(m_JumpComboAvailableTime);    
         Vector3 l_Forward = m_Camera.transform.forward;
         Vector3 l_Right = m_Camera.transform.right;
         l_Forward.y = 0.0f;
@@ -159,9 +169,25 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_Animator.SetFloat("Speed", 0.0f);
         }
 
-        if (CanJump() && Input.GetKeyDown(m_JumpKeyCode))
+        if (CanJump() && Input.GetKeyDown(m_JumpKeyCode) && m_JumpComboAvailableTime>5.0F)
+        {
+            m_JumpingComboCounter = 1;
             Jump();
-       
+            m_JumpComboAvailableTime = 0;
+        }
+        else if (CanJump() && Input.GetKeyDown(m_JumpKeyCode) && m_JumpComboAvailableTime < 1.0F)
+        {
+            m_JumpingComboCounter = 2;
+            Jump();
+            m_JumpComboAvailableTime = 0;
+        }
+        else if (CanJump() && Input.GetKeyDown(m_JumpKeyCode) && m_JumpComboAvailableTime < 1.0F)
+        {
+            m_JumpingComboCounter = 3;
+            Jump();
+            m_JumpComboAvailableTime = 0;
+        }
+
         l_Movement.Normalize();
         l_Movement = l_Movement * l_Speed * Time.deltaTime;
 
@@ -189,11 +215,20 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     {
         return true;
     }
-
     void Jump()
     {
-        m_Animator.SetTrigger("Jump");
-        StartCoroutine(ExecuteJump());
+        if (m_JumpingComboCounter == 1)
+        {
+            m_Animator.SetTrigger("Jump");
+            m_Animator.SetInteger("JumpsCombo", 1);
+            StartCoroutine(ExecuteJump());
+        }
+        if (m_JumpingComboCounter == 2)
+        {
+            m_Animator.SetTrigger("Jump");
+            m_Animator.SetInteger("JumpsCombo", 2);
+            StartCoroutine(ExecuteJump());
+        }
     }
 
     IEnumerator ExecuteJump()
