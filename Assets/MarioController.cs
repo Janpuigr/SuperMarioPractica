@@ -169,21 +169,9 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_Animator.SetFloat("Speed", 0.0f);
         }
 
-        if (CanJump() && Input.GetKeyDown(m_JumpKeyCode) && m_JumpComboAvailableTime>5.0F)
+        if (CanJump() && Input.GetKeyDown(m_JumpKeyCode))
         {
             m_JumpingComboCounter = 1;
-            Jump();
-            m_JumpComboAvailableTime = 0;
-        }
-        else if (CanJump() && Input.GetKeyDown(m_JumpKeyCode) && m_JumpComboAvailableTime < 1.0F)
-        {
-            m_JumpingComboCounter = 2;
-            Jump();
-            m_JumpComboAvailableTime = 0;
-        }
-        else if (CanJump() && Input.GetKeyDown(m_JumpKeyCode) && m_JumpComboAvailableTime < 1.0F)
-        {
-            m_JumpingComboCounter = 3;
             Jump();
             m_JumpComboAvailableTime = 0;
         }
@@ -210,25 +198,28 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         m_CharacterController.Move(l_Movement);
 
     }
-
+    bool IsGrounded()
+    {
+        // Verificar si el jugador está en el suelo (puedes personalizar esto)
+        return Physics.Raycast(transform.position, Vector3.down, 1.1f);
+    }
     bool CanJump()
     {
-        return true;
+        if (IsGrounded())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
     void Jump()
     {
-        if (m_JumpingComboCounter == 1)
-        {
-            m_Animator.SetTrigger("Jump");
-            m_Animator.SetInteger("JumpsCombo", 1);
-            StartCoroutine(ExecuteJump());
-        }
-        if (m_JumpingComboCounter == 2)
-        {
-            m_Animator.SetTrigger("Jump");
-            m_Animator.SetInteger("JumpsCombo", 2);
-            StartCoroutine(ExecuteJump());
-        }
+        m_Animator.SetTrigger("Jump");
+        m_Animator.SetInteger("JumpsCombo", 2);
+        StartCoroutine(ExecuteJump());
     }
 
     IEnumerator ExecuteJump()
