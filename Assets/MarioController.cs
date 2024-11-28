@@ -56,13 +56,13 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public float m_MaxAngleNeededToKillGoomba = 15.0f;
     public float m_MinVerticalSpeedTokillGoomba = -1.0f;
 
-    public float m_SecondJumpMultiplier = 1.5f; // Multiplicador del segundo salto
-    public float m_ThirdJumpMultiplier = 2f; // Multiplicador del tercer salto
-    public float m_JumpComboTime = 0.5f; // Tiempo permitido entre saltos
-    private int m_JumpCount = 0; // Contador de saltos consecutivos
-    private float m_LastJumpTime; // Tiempo del último salto
-    private float m_LastLandTime; // Tiempo del último aterrizaje
-    private bool m_CanJump = true; // Si el jugador puede saltar
+    public float m_SecondJumpMultiplier = 1.5f; 
+    public float m_ThirdJumpMultiplier = 2f;
+    public float m_JumpComboTime = 0.5f; 
+    private int m_JumpCount = 0; 
+    private float m_LastJumpTime; 
+    private float m_LastLandTime; 
+    private bool m_CanJump = true;
     public float m_ResetJumpTime = 2.0f;
     public float m_LandCooldownTime = 0.2f;
     private bool m_IsDead = false; 
@@ -94,7 +94,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     {
         if (IsGrounded() && m_VerticalSpeed <= 0.0f)
         {
-            m_LastLandTime = Time.time; // Actualiza el tiempo de aterrizaje
+            m_LastLandTime = Time.time; 
         }
         Vector3 l_Forward = m_Camera.transform.forward;
         Vector3 l_Right = m_Camera.transform.right;
@@ -178,7 +178,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_JumpCount = 0;
         }
 
-        // Reseteo de la capacidad de salto tras el aterrizaje
+        
         if (!m_CanJump && IsGrounded() && Time.time - m_LastLandTime > m_LandCooldownTime)
         {
             m_CanJump = true;
@@ -209,6 +209,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             UpdatePunch();
 
         m_CharacterController.Move(l_Movement);
+        
 
     }
     void HandleJump()
@@ -216,7 +217,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         m_Animator.SetTrigger("Jump");
         if (m_JumpCount >= 3)
         {
-            m_JumpCount = 0; // Resetea el contador al completar el tercer salto
+            m_JumpCount = 0;
         }
 
         float jumpForce = m_JumpVerticalSpeed;
@@ -239,11 +240,11 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         m_VerticalSpeed = jumpForce;
         m_LastJumpTime = Time.time;
         m_JumpCount++;
-        m_CanJump = false; // Evita saltos adicionales hasta pasar el cooldown tras aterrizar
+        m_CanJump = false; 
     }
     bool IsGrounded()
     {
-        // Verificar si el jugador está en el suelo (puedes personalizar esto)
+        
         return Physics.Raycast(transform.position, Vector3.down, 1.1f);
     }
     bool CanJump()
@@ -262,16 +263,16 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     {
         m_Animator.SetTrigger("Jump");
         m_Animator.SetInteger("JumpsCombo", 1); //CAMBIAR INT PARA CAMBIAR LA ANIMACION DE SALTO
-        StartCoroutine(ExecuteJump());
+        //StartCoroutine(ExecuteJump());
     }
-
+    /*
     IEnumerator ExecuteJump()
     {
         yield return new WaitForSeconds(m_WaitStartJumpTime); 
         m_VerticalSpeed = m_JumpVerticalSpeed;
         m_Animator.SetBool("Falling", false);
     }
-
+    */
 
     void UpdatePunch()
     {
