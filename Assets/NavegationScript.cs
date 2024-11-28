@@ -34,6 +34,7 @@ public class NavegationScript : MonoBehaviour
         if (m_Goomba.m_SeesPlayer)
         {
             agent.destination = m_Player.position;
+            agent.speed = 6.0f;
         }
         else if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
@@ -43,6 +44,7 @@ public class NavegationScript : MonoBehaviour
 
     void MoveToNextPoint()
     {
+        agent.speed = 3.5f;
         if (points.Count == 0) return;
 
         agent.destination = points[currentPointIndex].position;

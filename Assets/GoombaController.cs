@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GoombaController : MonoBehaviour,IRestartGameElement
 {
+    Animator m_Animator;
     CharacterController characterController;
     Vector3 m_StartPosition;
     Quaternion m_StartRotation;
@@ -16,6 +17,7 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        m_Animator = GetComponent<Animator>();
     }
 
     void Start()
@@ -43,31 +45,26 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
         if (l_Distance < m_MaxDistanceToSeePlayer)
         {
             Debug.Log("ESTA CERCA");
+
             m_SeesPlayer = true;
+            m_Animator.SetTrigger("Alert");
+            m_Animator.SetBool("GoombaRun",true);
             l_Direction /= l_Distance;
             float l_DotAngle = Vector3.Dot(l_Direction, transform.forward);
 
             if (Physics.Raycast(l_Ray, l_Distance, m_SigthLayerMask.value))
             {
-
-
                 if (l_DotAngle >= Mathf.Cos(m_ConeAngle * Mathf.Deg2Rad / 2.0f))
                 {
                     Debug.Log("VE PLAYER");
                 }
-                    
-
-
             }
         }
         else
         {
             m_SeesPlayer = false;
+            m_Animator.SetBool("GoombaRun", false);
         }
-    }
-    void SeesPlayer()
-    {
-        m_SeesPlayer=true;
     }
     public void RestartGame()
     {
