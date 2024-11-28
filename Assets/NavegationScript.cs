@@ -11,7 +11,8 @@ public class NavegationScript : MonoBehaviour
     public Transform m_point4;
     public Transform m_point5;
     public Transform m_point6;
-
+    public GoombaController m_Goomba;
+    public Transform m_Player;
     private NavMeshAgent agent;
     private List<Transform> points; 
     private int currentPointIndex = 0; 
@@ -19,6 +20,7 @@ public class NavegationScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_Goomba = GetComponent<GoombaController>();
         agent = GetComponent<NavMeshAgent>();
 
         points = new List<Transform> { m_point1, m_point2, m_point3, m_point4, m_point5, m_point6 };
@@ -29,8 +31,11 @@ public class NavegationScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        if (m_Goomba.m_SeesPlayer)
+        {
+            agent.destination = m_Player.position;
+        }
+        else if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             MoveToNextPoint();
         }

@@ -513,6 +513,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05bc84871bcd2674998b960577d2a4fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Player: {fileID: 975998783}
+  m_SigthLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ConeAngle: 60
+  m_MaxDistanceToSeePlayer: 20
+  m_SeesPlayer: 0
 --- !u!143 &141611705
 CharacterController:
   m_ObjectHideFlags: 0
@@ -579,6 +586,8 @@ MonoBehaviour:
   m_point4: {fileID: 250794105}
   m_point5: {fileID: 678882241}
   m_point6: {fileID: 1055799012}
+  m_Goomba: {fileID: 141611704}
+  m_Player: {fileID: 975998785}
 --- !u!1 &250794104
 GameObject:
   m_ObjectHideFlags: 0
