@@ -61,8 +61,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public float m_JumpComboTime = 0.5f; // Tiempo permitido entre saltos
     private int m_JumpCount = 0; // Contador de saltos consecutivos
     private float m_LastJumpTime; // Tiempo del último salto
-
-
+    private float m_LastLandTime; // Tiempo del último aterrizaje
+    private bool m_CanJump = true; // Si el jugador puede saltar
+    public float m_ResetJumpTime = 2.0f;
+    public float m_LandCooldownTime = 0.2f;
     private bool m_IsDead = false; 
     public Transform m_RespawnPoint; 
 
@@ -90,7 +92,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Update()
     {
-
+        if (IsGrounded() && m_VerticalSpeed <= 0.0f)
+        {
+            m_LastLandTime = Time.time; // Actualiza el tiempo de aterrizaje
+        }
         Vector3 l_Forward = m_Camera.transform.forward;
         Vector3 l_Right = m_Camera.transform.right;
         l_Forward.y = 0.0f;
@@ -168,11 +173,20 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_Animator.SetFloat("Speed", 0.0f);
         }
 
-        if (CanJump() && Input.GetKeyDown(m_JumpKeyCode))
+        if (Time.time - m_LastJumpTime > m_ResetJumpTime)
         {
-            m_HasMovement = true;
+            m_JumpCount = 0;
+        }
+
+        // Reseteo de la capacidad de salto tras el aterrizaje
+        if (!m_CanJump && IsGrounded() && Time.time - m_LastLandTime > m_LandCooldownTime)
+        {
+            m_CanJump = true;
+        }
+
+        if (Input.GetKeyDown(m_JumpKeyCode) && CanJump())
+        {
             HandleJump();
-            //Jump();
         }
 
         l_Movement.Normalize();
@@ -223,9 +237,9 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         }
 
         m_VerticalSpeed = jumpForce;
-        
         m_LastJumpTime = Time.time;
         m_JumpCount++;
+        m_CanJump = false; // Evita saltos adicionales hasta pasar el cooldown tras aterrizar
     }
     bool IsGrounded()
     {
