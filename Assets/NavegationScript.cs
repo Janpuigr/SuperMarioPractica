@@ -15,11 +15,14 @@ public class NavegationScript : MonoBehaviour
     public Transform m_Player;
     private NavMeshAgent agent;
     private List<Transform> points; 
-    private int currentPointIndex = 0; 
+    private int currentPointIndex = 0;
+    Vector3 m_targetPlayerPosition;
+    bool hasSeen;
 
     // Start is called before the first frame update
     void Start()
     {
+        hasSeen = false;
         m_Goomba = GetComponent<GoombaController>();
         agent = GetComponent<NavMeshAgent>();
 
@@ -33,6 +36,7 @@ public class NavegationScript : MonoBehaviour
     {
         if (m_Goomba.m_SeesPlayer)
         {
+            hasSeen = true;
             agent.destination = m_Player.position;
             agent.speed = 6.0f;
         }

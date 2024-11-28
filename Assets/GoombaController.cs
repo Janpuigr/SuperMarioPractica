@@ -49,16 +49,7 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
             m_SeesPlayer = true;
             m_Animator.SetTrigger("Alert");
             m_Animator.SetBool("GoombaRun",true);
-            l_Direction /= l_Distance;
-            float l_DotAngle = Vector3.Dot(l_Direction, transform.forward);
 
-            if (Physics.Raycast(l_Ray, l_Distance, m_SigthLayerMask.value))
-            {
-                if (l_DotAngle >= Mathf.Cos(m_ConeAngle * Mathf.Deg2Rad / 2.0f))
-                {
-                    Debug.Log("VE PLAYER");
-                }
-            }
         }
         else
         {
