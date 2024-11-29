@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class MarioController : MonoBehaviour, IRestartGameElement
@@ -11,6 +12,11 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         LEFT_HAND,
         KICK
     }
+
+    public Image LifeImage;
+    public Animation m_Animation;
+    public AnimationClip m_IdleAnimationClip;
+    public AnimationClip m_ShowAnimationClip;
 
     CharacterController m_CharacterController;
     Animator m_Animator;
@@ -84,7 +90,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     void Start()
     {
         m_Animator.fireEvents = false;
-
+        LifeImage.fillAmount = 1f;
         m_LeftHandPunchHitCollider.gameObject.SetActive(false);
         m_RightHandPunchHitCollider.gameObject.SetActive(false);
         m_RightFootKickHitCollider.gameObject.SetActive(false);
@@ -340,6 +346,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             else
             {
                 Debug.Log("player must be hit");
+                UpdateLife();
+                Debug.Log("player must be hit");
             }
         }
         else if (hit.gameObject.CompareTag("Bridge"))
@@ -347,7 +355,17 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             hit.rigidbody.AddForceAtPosition(-hit.normal * m_BridgeForce, hit.point);
         }
     }
+    public void UpdateLife()
+    {
+        LifeImage.fillAmount = 0.85f;
+        ShowAnimation();
 
+    }
+    void ShowAnimation()
+    {
+        m_Animation.Play(m_ShowAnimationClip.name);
+        m_Animation.PlayQueued(m_IdleAnimationClip.name);
+    }
 
     bool IsUpperHit(Transform GoombaTransform)
     {

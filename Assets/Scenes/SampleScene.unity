@@ -785,6 +785,27 @@ MonoBehaviour:
   m_point6: {fileID: 1055799012}
   m_Goomba: {fileID: 141611704}
   m_Player: {fileID: 975998785}
+--- !u!135 &141611712
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141611703}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.9160125
+  m_Center: {x: 0, y: 0.8026953, z: 0}
 --- !u!1 &151132721
 GameObject:
   m_ObjectHideFlags: 0
@@ -1981,6 +2002,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100010, guid: 0dc47b9b8a69aca49a111614ec2274be, type: 3}
       insertIndex: -1
       addedObject: {fileID: 141611709}
+    - targetCorrespondingSourceObject: {fileID: 100010, guid: 0dc47b9b8a69aca49a111614ec2274be, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 141611712}
   m_SourcePrefab: {fileID: 100100000, guid: 0dc47b9b8a69aca49a111614ec2274be, type: 3}
 --- !u!4 &751337754 stripped
 Transform:
@@ -2264,6 +2288,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90541fba26600a842adf201d7a8c43cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LifeImage: {fileID: 328896739}
+  m_Animation: {fileID: 392855590}
+  m_IdleAnimationClip: {fileID: 7400000, guid: 5993842dee3b66247aae3ccc3f56fe1a, type: 2}
+  m_ShowAnimationClip: {fileID: 7400000, guid: 13d8c61804a8a9e4eb0df5dca5141d7e, type: 2}
   m_Camera: {fileID: 963194227}
   m_BridgeForce: 10
   m_WalkSpeed: 2

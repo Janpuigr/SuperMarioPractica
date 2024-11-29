@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GoombaController : MonoBehaviour,IRestartGameElement
 {
+
     Animator m_Animator;
     CharacterController characterController;
     Vector3 m_StartPosition;
@@ -14,6 +16,7 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
     public float m_MaxDistanceToSeePlayer = 20.0f;
     public bool m_SeesPlayer;
 
+
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -22,6 +25,7 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
 
     void Start()
     {
+
         m_SeesPlayer = false;
         m_StartPosition = transform.position;
         m_StartRotation = transform.rotation;
@@ -65,6 +69,7 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
         transform.rotation = m_StartRotation;
         characterController.enabled = true;
     }
+
 
     public void Kill()
     {
