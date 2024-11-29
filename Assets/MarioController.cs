@@ -17,7 +17,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public Camera m_Camera;
 
     Checkpoint m_CurrentCheckpoint;
-
+    public float m_BridgeForce = 3.0f;
     public float m_WalkSpeed = 2.0f;
     public float m_RunSpeed = 8.0f;
     public float m_LerpRotationPct = 0.8f;
@@ -66,8 +66,11 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public float m_ResetJumpTime = 2.0f;
     public float m_LandCooldownTime = 0.2f;
     private bool m_IsDead = false; 
-    public Transform m_RespawnPoint; 
+    public Transform m_RespawnPoint;
 
+    [Header("Elevator")]
+    public float m_MaxAngleToAttachElevator=8.0f;
+    Collider m_CurrentElevator = null;
     
     private float m_IdleTime = 0.0f; 
     private bool m_HasMovement = false; 
@@ -209,8 +212,13 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             UpdatePunch();
 
         m_CharacterController.Move(l_Movement);
-        
 
+        UpdateElevator();
+    }
+    void LateUpdate()
+    {
+        Vector3 l_Angles = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(0.0f, l_Angles.y, 0.0f);
     }
     void HandleJump()
     {
@@ -334,7 +342,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
                 Debug.Log("player must be hit");
             }
         }
-            
+        else if (hit.gameObject.CompareTag("Bridge"))
+        {
+            hit.rigidbody.AddForceAtPosition(-hit.normal * m_BridgeForce, hit.point);
+        }
     }
 
 
@@ -356,7 +367,69 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             m_CurrentCheckpoint = other.GetComponent<Checkpoint>();
         }
+        if (other.CompareTag("Elevator"))
+        {
+            if (CanAttachElevator(other))
+            {
+                Debug.Log("Toco Elevator");
+                AttachElevator(other);
+            }
+        }
     }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Elevator")&& other==m_CurrentElevator)
+        {
+            DetachElevator();
+        }
+    }
+    bool CanAttachElevator(Collider Elevator)
+    {
+        if (m_CurrentElevator != null)
+        {
+            return false;
+        }
+        return IsAttachableElevator(Elevator);
+    }
+    bool IsAttachableElevator(Collider Elevator)
+    {
+        float l_DotAngle = Vector3.Dot(Elevator.transform.forward, Vector3.left);
+        if (l_DotAngle >= Mathf.Cos(m_MaxAngleToAttachElevator * Mathf.Deg2Rad))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    void AttachElevator(Collider Elevator)
+    {
+        transform.SetParent(Elevator.transform.parent);
+        m_CurrentElevator = Elevator;
+
+    }
+    
+    void DetachElevator()
+    {
+        m_CurrentElevator = null;
+        transform.SetParent(null);
+   
+    }
+
+
+    void UpdateElevator()
+    {
+        if (m_CurrentElevator == null) 
+        {
+            return;
+        }
+        if (!IsAttachableElevator(m_CurrentElevator))
+        {
+            DetachElevator();
+        }
+    }
+    
     public void RestartGame()
     {
         m_CharacterController.enabled = false;

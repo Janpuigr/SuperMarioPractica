@@ -44,7 +44,7 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
 
         if (l_Distance < m_MaxDistanceToSeePlayer)
         {
-            Debug.Log("ESTA CERCA");
+            //Debug.Log("ESTA CERCA");
 
             m_SeesPlayer = true;
             m_Animator.SetTrigger("Alert");
