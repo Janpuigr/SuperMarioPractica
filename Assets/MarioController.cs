@@ -21,7 +21,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     CharacterController m_CharacterController;
     Animator m_Animator;
     public Camera m_Camera;
-
+    public float m_HorizontalSpeed = 0.0f;
+    public float m_GoombaHitSpeed = 8.0f;
     Checkpoint m_CurrentCheckpoint;
     public float m_BridgeForce = 3.0f;
     public float m_WalkSpeed = 2.0f;
@@ -201,7 +202,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         l_Movement.Normalize();
         l_Movement = l_Movement * l_Speed * Time.deltaTime;
 
-        
+        m_HorizontalSpeed += Physics.gravity.x * Time.deltaTime;
         m_VerticalSpeed += Physics.gravity.y * Time.deltaTime;
         l_Movement.y = m_VerticalSpeed * Time.deltaTime;
 
@@ -356,7 +357,21 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     public void UpdateLife()
     {
-        LifeImage.fillAmount -= 0.15f;
+        LifeImage.fillAmount -= 0.125f;
+        if (LifeImage.fillAmount <= 0.75f)
+        {
+            LifeImage.color = Color.blue;
+        }
+        if (LifeImage.fillAmount <= 0.50f)
+        {
+            LifeImage.color = Color.yellow;
+        }
+        if (LifeImage.fillAmount <= 0.25f)
+        {
+            LifeImage.color = Color.red;
+        }
+
+
         ShowAnimation();
 
     }
@@ -395,6 +410,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         if (other.CompareTag("Goomba"))
         {
             UpdateLife();
+            m_HorizontalSpeed = m_GoombaHitSpeed;
             Debug.Log("player must be hit");
         }
     }
