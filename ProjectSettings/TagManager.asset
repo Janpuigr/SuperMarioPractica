@@ -8,6 +8,7 @@ TagManager:
   - Goomba
   - Bridge
   - Elevator
+  - Coin
   layers:
   - Default
   - TransparentFX
