@@ -401,9 +401,9 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         }
         if (other.CompareTag("Elevator"))
         {
+                Debug.Log("Toco Elevator");
             if (CanAttachElevator(other))
             {
-                Debug.Log("Toco Elevator");
                 AttachElevator(other);
             }
         }
@@ -431,7 +431,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     bool IsAttachableElevator(Collider Elevator)
     {
-        float l_DotAngle = Vector3.Dot(Elevator.transform.forward, Vector3.left);
+        float l_DotAngle = Vector3.Dot(Elevator.transform.forward, Vector3.up);
         if (l_DotAngle >= Mathf.Cos(m_MaxAngleToAttachElevator * Mathf.Deg2Rad))
         {
             return true;
