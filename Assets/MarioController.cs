@@ -345,7 +345,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             }
             else
             {
-                Debug.Log("player must be hit");
                 UpdateLife();
                 Debug.Log("player must be hit");
             }
@@ -357,7 +356,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     public void UpdateLife()
     {
-        LifeImage.fillAmount = 0.85f;
+        LifeImage.fillAmount -= 0.15f;
         ShowAnimation();
 
     }
@@ -392,6 +391,11 @@ public class MarioController : MonoBehaviour, IRestartGameElement
                 Debug.Log("Toco Elevator");
                 AttachElevator(other);
             }
+        }
+        if (other.CompareTag("Goomba"))
+        {
+            UpdateLife();
+            Debug.Log("player must be hit");
         }
     }
     private void OnTriggerExit(Collider other)
