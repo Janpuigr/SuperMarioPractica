@@ -80,7 +80,24 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     Collider m_CurrentElevator = null;
     
     private float m_IdleTime = 0.0f; 
-    private bool m_HasMovement = false; 
+    private bool m_HasMovement = false;
+
+
+    [Header("Long Jump Settings")]
+    public float m_LongJumpForwardForce = 10f;
+    public float m_LongJumpVerticalForce = 5f;
+
+    [Header("Wall Jump Settings")]
+    public float m_WallJumpForce = 7f;
+    public LayerMask m_WallLayer;
+
+    [Header("Hit Settings")]
+    public float m_HitRecoveryTime = 1.0f;
+    private bool m_IsHit = false;
+
+
+
+
 
     private void Awake()
     {
@@ -147,7 +164,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_IdleTime = 0.0f; 
         }
 
-       /*
+       
         if (m_IdleTime >= 10.0f) 
         {
             m_Animator.SetBool("SpecialIdle", true); 
@@ -156,7 +173,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             m_Animator.SetBool("SpecialIdle", false); 
         }
-       */
+       
         
         float l_Speed = 0.0f;
 
@@ -221,7 +238,42 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         m_CharacterController.Move(l_Movement);
 
         UpdateElevator();
+
+        if (Input.GetKey(m_RunKeyCode) && Input.GetKeyDown(m_JumpKeyCode) && IsGrounded())
+        {
+            PerformLongJump();
+        }
+
+        if (!IsGrounded() && Input.GetKeyDown(m_JumpKeyCode) && IsTouchingWall())
+        {
+            PerformWallJump();
+        }
     }
+
+    bool IsTouchingWall()
+    {
+        return Physics.Raycast(transform.position, transform.right, 1f, m_WallLayer) ||
+               Physics.Raycast(transform.position, -transform.right, 1f, m_WallLayer);
+    }
+
+    void PerformWallJump()
+    {
+        m_Animator.SetTrigger("WallJumpTrigger");
+        m_VerticalSpeed = m_WallJumpForce;
+        Vector3 wallJumpDirection = -transform.right; // Salta en dirección opuesta a la pared
+        m_CharacterController.Move(wallJumpDirection * Time.deltaTime);
+    }
+
+
+    void PerformLongJump()
+    {
+        m_Animator.SetTrigger("LongJumpTrigger");
+        Vector3 jumpDirection = transform.forward * m_LongJumpForwardForce;
+        m_VerticalSpeed = m_LongJumpVerticalForce;
+        m_CharacterController.Move(jumpDirection * Time.deltaTime);
+    }
+
+
     void LateUpdate()
     {
         Vector3 l_Angles = transform.rotation.eulerAngles;
@@ -413,7 +465,28 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_HorizontalSpeed = m_GoombaHitSpeed;
             Debug.Log("player must be hit");
         }
+        if (other.CompareTag("Goomba"))
+        {
+            if (!m_IsHit)
+            {
+                PerformHit();
+            }
+        }
     }
+
+    void PerformHit()
+    {
+        m_IsHit = true;
+        m_Animator.SetTrigger("HitTrigger");
+        StartCoroutine(HitRecovery());
+    }
+
+    IEnumerator HitRecovery()
+    {
+        yield return new WaitForSeconds(m_HitRecoveryTime);
+        m_IsHit = false;
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Elevator")&& other==m_CurrentElevator)
