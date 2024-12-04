@@ -12,6 +12,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         LEFT_HAND,
         KICK
     }
+    public float m_GoombaHitForce = 10f; 
+    private Vector3 pushDirection = Vector3.zero;
+    private float pushBackTime = 0f; 
+
 
     public Image LifeImage;
     public Animation m_Animation;
@@ -95,13 +99,23 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public float m_HitRecoveryTime = 1.0f;
     private bool m_IsHit = false;
 
+    private float m_pushForce = 10.0f;
 
-
+    private CharacterController characterController;
+    private Vector3 knockbackDirection;
+    private float knockbackForce = 5.0f; 
+    private float knockbackDuration = 0.2f;
+    private float knockbackTimer = 0.0f;
 
 
     private void Awake()
     {
         m_CharacterController = GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();
+        if (characterController == null)
+        {
+            Debug.LogError("CharacterController is not assigned in Mario!");
+        }
         m_Animator = GetComponent<Animator>();
     }
 
@@ -248,6 +262,39 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             PerformWallJump();
         }
+
+        if (knockbackTimer > 0)
+        {
+            if (characterController != null)
+            {
+                if (knockbackDirection != Vector3.zero) 
+                {
+                    characterController.Move(knockbackDirection * knockbackForce * Time.deltaTime);
+                    knockbackTimer -= Time.deltaTime; 
+                }
+                else
+                {
+                    Debug.LogError("Knockback direction is zero!");
+                }
+            }
+            else
+            {
+                Debug.LogError("CharacterController is not assigned!");
+            }
+        }
+
+        if (pushBackTime > 0f)
+        {
+            
+            CharacterController characterController = GetComponent<CharacterController>();
+
+            if (characterController != null)
+            {
+               
+                characterController.Move(pushDirection * m_GoombaHitForce * Time.deltaTime);
+                pushBackTime -= Time.deltaTime; 
+            }
+        }
     }
 
     bool IsTouchingWall()
@@ -260,7 +307,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     {
         m_Animator.SetTrigger("WallJumpTrigger");
         m_VerticalSpeed = m_WallJumpForce;
-        Vector3 wallJumpDirection = -transform.right; // Salta en dirección opuesta a la pared
+        Vector3 wallJumpDirection = -transform.right; 
         m_CharacterController.Move(wallJumpDirection * Time.deltaTime);
     }
 
@@ -389,24 +436,31 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if(hit.gameObject.CompareTag("Goomba")) 
+        if (hit.gameObject.CompareTag("Goomba"))
         {
             if (IsUpperHit(hit.transform))
             {
+               
                 hit.gameObject.GetComponent<GoombaController>().Kill();
                 m_VerticalSpeed = m_killJumpVerticalSpeed;
             }
             else
             {
+                
+                knockbackDirection = (transform.position - hit.transform.position).normalized;
+                knockbackDirection.y = 0; 
+
+                
+                knockbackTimer = knockbackDuration;
+
+                
                 UpdateLife();
-                Debug.Log("player must be hit");
+                Debug.Log("Mario fue golpeado por Goomba.");
             }
         }
-        else if (hit.gameObject.CompareTag("Bridge"))
-        {
-            hit.rigidbody.AddForceAtPosition(-hit.normal * m_BridgeForce, hit.point);
-        }
     }
+
+
     public void UpdateLife()
     {
         LifeImage.fillAmount -= 0.125f;
@@ -451,28 +505,51 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             m_CurrentCheckpoint = other.GetComponent<Checkpoint>();
         }
+
         if (other.CompareTag("Elevator"))
         {
-                Debug.Log("Toco Elevator");
+            Debug.Log("Toco Elevator");
             if (CanAttachElevator(other))
             {
                 AttachElevator(other);
             }
         }
+
         if (other.CompareTag("Goomba"))
         {
+           
             UpdateLife();
-            m_HorizontalSpeed = m_GoombaHitSpeed;
-            Debug.Log("player must be hit");
-        }
-        if (other.CompareTag("Goomba"))
-        {
+
+            
+            CharacterController characterController = GetComponent<CharacterController>();
+            Animator animator = GetComponent<Animator>();
+
+            if (characterController != null && animator != null)
+            {
+               
+                pushDirection = transform.position - other.transform.position;
+                pushDirection.y = 0; 
+
+                
+                pushDirection.Normalize();
+
+               
+                animator.SetTrigger("Hit");
+
+                
+                pushBackTime = 0.3f;
+
+                Debug.Log("Player pushed back and hit animation played");
+            }
+
+            
             if (!m_IsHit)
             {
                 PerformHit();
             }
         }
     }
+
 
     void PerformHit()
     {

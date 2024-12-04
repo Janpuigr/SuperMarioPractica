@@ -16,6 +16,34 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
     public float m_MaxDistanceToSeePlayer = 20.0f;
     public bool m_SeesPlayer;
 
+    public float attackCooldown = 2.0f;
+    public float retreatDistance = 2.0f; 
+    private bool canAttack = true;
+    private Vector3 initialPosition; 
+
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && canAttack)
+        {
+            
+            Debug.Log("Goomba ataca a Mario.");
+            StartCoroutine(AttackCooldownRoutine());
+
+           
+            Vector3 retreatDirection = (transform.position - other.transform.position).normalized;
+            retreatDirection.y = 0; 
+            transform.position += retreatDirection * retreatDistance;
+        }
+    }
+
+    private IEnumerator AttackCooldownRoutine()
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(attackCooldown); 
+        canAttack = true; 
+    }
 
     private void Awake()
     {
@@ -30,6 +58,7 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
         m_StartPosition = transform.position;
         m_StartRotation = transform.rotation;
         GameManager.GetGameManager().AddRestartGameElement(this);
+        initialPosition = transform.position; // Almacena la posición inicial
     }
     private void Update()
     {

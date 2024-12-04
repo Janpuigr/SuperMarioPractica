@@ -651,6 +651,8 @@ MonoBehaviour:
   m_ConeAngle: 60
   m_MaxDistanceToSeePlayer: 20
   m_SeesPlayer: 0
+  attackCooldown: 2
+  retreatDistance: 2
 --- !u!143 &141611705
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2336,6 +2338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90541fba26600a842adf201d7a8c43cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_GoombaHitForce: 5
   LifeImage: {fileID: 328896739}
   m_Animation: {fileID: 392855590}
   m_IdleAnimationClip: {fileID: 7400000, guid: 5993842dee3b66247aae3ccc3f56fe1a, type: 2}
