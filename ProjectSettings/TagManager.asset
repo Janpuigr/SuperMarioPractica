@@ -9,6 +9,7 @@ TagManager:
   - Bridge
   - Elevator
   - Coin
+  - Deadzone
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Logic
   - Wall
   - Goomba
-  - 
+  - DeathUI
   - 
   - 
   - 

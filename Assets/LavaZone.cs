@@ -8,11 +8,7 @@ public class LavaZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            MarioController player = other.GetComponent<MarioController>();
-            if (player != null)
-            {
-                player.Die();
-            }
+            
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 
 public class MarioController : MonoBehaviour, IRestartGameElement
@@ -16,7 +17,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     private Vector3 pushDirection = Vector3.zero;
     private float pushBackTime = 0f;
 
-    public Image UICanva;
+    public GameObject UIDeadCanva;
+    public static Action OnPlayerDeath;
 
     public Image LifeImage;
     public Animation m_Animation;
@@ -131,7 +133,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         GameManager.GetGameManager().AddRestartGameElement(this);
         m_StartPosition = transform.position;
         m_StartRotation = transform.rotation;
-        UICanva.gameObject.SetActive(false);
+        UIDeadCanva.SetActive(false);
     }
 
     void Update()
@@ -504,7 +506,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         return false;
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("CheckPoint"))
@@ -552,6 +553,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             if (!m_IsHit)
             {
                 PerformHit();
+            }
+            if (other.CompareTag("Deadzone"))
+            {
+                RestartGame();
             }
         }
     }
@@ -638,9 +643,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             transform.position = m_CurrentCheckpoint.m_RespawnPosition.position;
             transform.rotation = m_CurrentCheckpoint.m_RespawnPosition.rotation;
         }
-
+        UIDeadCanva.SetActive(true);
         LifeImage.fillAmount = 1.0f;
         LifeImage.color = Color.green;
+        Time.timeScale = 0f;
         m_CharacterController.enabled = true;
     }
 
@@ -654,7 +660,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         m_CharacterController.enabled = false; 
 
         Invoke(nameof(Respawn), 3.0f);
-        UICanva.gameObject.SetActive(true);
+        UIDeadCanva.SetActive(true);
     }
 
 
