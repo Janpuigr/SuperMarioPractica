@@ -22,7 +22,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public Animation m_Animation;
     public AnimationClip m_IdleAnimationClip;
     public AnimationClip m_ShowAnimationClip;
-
+    GameManager m_GameManager;
     CharacterController m_CharacterController;
     Animator m_Animator;
     public Camera m_Camera;
@@ -118,6 +118,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             Debug.LogError("CharacterController is not assigned in Mario!");
         }
         m_Animator = GetComponent<Animator>();
+        m_GameManager = GetComponent<GameManager>();
     }
 
     void Start()
@@ -480,7 +481,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         }
         if (LifeImage.fillAmount==0)
         {
-            Die();
+            m_GameManager.RestartGame();
         }
 
         ShowAnimation();

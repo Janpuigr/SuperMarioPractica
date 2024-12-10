@@ -16,6 +16,7 @@ public class Item : MonoBehaviour, IRestartGameElement
 
 	public void RestartGame()
 	{
+		DependencyInjector.GetDependency<IScoreManager>().RestartPoints();
 		gameObject.SetActive(true);
 	}
 }
