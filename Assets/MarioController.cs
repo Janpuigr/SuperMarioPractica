@@ -26,12 +26,12 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public AnimationClip m_ShowAnimationClip;
     GameManager m_GameManager;
     CharacterController m_CharacterController;
-    Animator m_Animator;
+    static public Animator m_Animator;
     public Camera m_Camera;
     public float m_HorizontalSpeed = 0.0f;
     public float m_GoombaHitSpeed = 8.0f;
     Checkpoint m_CurrentCheckpoint;
-    public float m_BridgeForce = 3.0f;
+    public float m_BridgeForce = 20.0f;
     public float m_WalkSpeed = 2.0f;
     public float m_RunSpeed = 8.0f;
     public float m_LerpRotationPct = 0.8f;
@@ -462,6 +462,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
                 UpdateLife();
                 Debug.Log("Mario fue golpeado por Goomba.");
             }
+        }
+        else if (hit.gameObject.CompareTag("Bridge"))
+        {
+            hit.rigidbody.AddForceAtPosition(-hit.normal * m_BridgeForce, hit.point);
         }
     }
 
