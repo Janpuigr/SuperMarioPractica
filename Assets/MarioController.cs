@@ -481,7 +481,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         }
         if (LifeImage.fillAmount==0)
         {
-            m_GameManager.RestartGame();
+            RestartGame();
         }
 
         ShowAnimation();
@@ -639,7 +639,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             transform.rotation = m_CurrentCheckpoint.m_RespawnPosition.rotation;
         }
 
-       
+        LifeImage.fillAmount = 1.0f;
+        LifeImage.color = Color.green;
         m_CharacterController.enabled = true;
     }
 
