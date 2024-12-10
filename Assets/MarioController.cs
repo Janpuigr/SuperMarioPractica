@@ -468,7 +468,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     public void UpdateLife()
     {
+        // Reducir la vida
         LifeImage.fillAmount -= 0.125f;
+
+        // Cambiar color según la cantidad de vida restante
         if (LifeImage.fillAmount <= 0.75f)
         {
             LifeImage.color = Color.blue;
@@ -481,13 +484,18 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             LifeImage.color = Color.red;
         }
-        if (LifeImage.fillAmount==0)
+        if (LifeImage.fillAmount == 0)
         {
-            RestartGame();
+            m_Animator.SetBool("IsDead", true);
+            StartCoroutine(RestartGameWithDelay());
         }
-
         ShowAnimation();
+    }
 
+    private IEnumerator RestartGameWithDelay()
+    {
+        yield return new WaitForSeconds(2f); // wait 3 segundos 
+        RestartGame();
     }
     void ShowAnimation()
     {
@@ -544,7 +552,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
                 animator.SetTrigger("Hit");
 
                 
-                pushBackTime = 0.3f;
+                pushBackTime = 0.5f;
 
                 Debug.Log("Player pushed back and hit animation played");
             }

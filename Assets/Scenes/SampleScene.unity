@@ -1670,7 +1670,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 40, y: -143}
+  m_AnchoredPosition: {x: -0.000061035, y: -149}
   m_SizeDelta: {x: 760.9855, y: 105.1378}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &499691556
@@ -2664,7 +2664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90541fba26600a842adf201d7a8c43cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GoombaHitForce: 5
+  m_GoombaHitForce: 10
   UIDeadCanva: {fileID: 259785291}
   LifeImage: {fileID: 328896739}
   m_Animation: {fileID: 392855590}
