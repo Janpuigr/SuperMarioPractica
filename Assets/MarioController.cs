@@ -14,8 +14,9 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     public float m_GoombaHitForce = 10f; 
     private Vector3 pushDirection = Vector3.zero;
-    private float pushBackTime = 0f; 
+    private float pushBackTime = 0f;
 
+    public Image UICanva;
 
     public Image LifeImage;
     public Animation m_Animation;
@@ -129,6 +130,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         GameManager.GetGameManager().AddRestartGameElement(this);
         m_StartPosition = transform.position;
         m_StartRotation = transform.rotation;
+        UICanva.gameObject.SetActive(false);
     }
 
     void Update()
@@ -476,7 +478,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             LifeImage.color = Color.red;
         }
-
+        if (LifeImage.fillAmount==0)
+        {
+            Die();
+        }
 
         ShowAnimation();
 
@@ -647,6 +652,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         m_CharacterController.enabled = false; 
 
         Invoke(nameof(Respawn), 3.0f);
+        UICanva.gameObject.SetActive(true);
     }
 
 
