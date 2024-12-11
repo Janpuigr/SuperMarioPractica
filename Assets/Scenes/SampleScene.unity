@@ -1280,6 +1280,7 @@ GameObject:
   - component: {fileID: 328269749}
   - component: {fileID: 328269748}
   - component: {fileID: 328269747}
+  - component: {fileID: 328269751}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -1358,6 +1359,27 @@ RectTransform:
   m_AnchoredPosition: {x: 960, y: 983}
   m_SizeDelta: {x: 1920, y: 185.7141}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &328269751
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328269746}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 2c49a169fa02b2545921fcc829011ecb, type: 3}
+  m_Controller: {fileID: 9100000, guid: 9774dae040739f448b5a0748e7245ed7, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &328896737
 GameObject:
   m_ObjectHideFlags: 0
