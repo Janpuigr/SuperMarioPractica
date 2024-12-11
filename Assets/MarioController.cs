@@ -670,9 +670,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             transform.rotation = m_CurrentCheckpoint.m_RespawnPosition.rotation;
         }
         UIDeadCanva.SetActive(true);
+        m_Animator.SetBool("IsDead", false);
         LifeImage.fillAmount = 1.0f;
-        LifeImage.color = Color.green;
-        Time.timeScale = 0f;
         m_CharacterController.enabled = true;
     }
 
