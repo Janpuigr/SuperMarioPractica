@@ -505,6 +505,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     private IEnumerator RestartGameWithDelay()
     {
+        m_CharacterController.enabled = false;
         yield return new WaitForSeconds(2f); 
         RestartGame();
     }
@@ -579,10 +580,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             if (!m_IsHit)
             {
                 PerformHit();
-            }
-            if (other.CompareTag("Deadzone"))
-            {
-                RestartGame();
             }
         }
     }
