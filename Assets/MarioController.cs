@@ -13,30 +13,35 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         LEFT_HAND,
         KICK
     }
+    [Header("Goomba")]
     public float m_GoombaHitForce = 10f; 
     private Vector3 pushDirection = Vector3.zero;
     private float pushBackTime = 0f;
+    public float m_GoombaHitSpeed = 8.0f;
 
+    [Header("UI")]
     public GameObject UIDeadCanva;
     public static Action OnPlayerDeath;
-
     public Image LifeImage;
+
+    [Header("Animations")]
     public Animation m_Animation;
     public AnimationClip m_IdleAnimationClip;
     public AnimationClip m_ShowAnimationClip;
-    GameManager m_GameManager;
-    public static CharacterController m_CharacterController;
     static public Animator m_Animator;
+
+    [Header("Values")]
     public Camera m_Camera;
     public float m_HorizontalSpeed = 0.0f;
-    public float m_GoombaHitSpeed = 8.0f;
     Checkpoint m_CurrentCheckpoint;
     public float m_BridgeForce = 20.0f;
     public float m_WalkSpeed = 2.0f;
     public float m_RunSpeed = 8.0f;
     public float m_LerpRotationPct = 0.8f;
     float m_VerticalSpeed = 0.0f;
+    GameManager m_GameManager;
 
+    public static CharacterController m_CharacterController;
     [Header("Punch")]
     public float m_PunchComboAvailableTime = 1.3f;
     int m_CurrentPunchId = 0;
@@ -57,7 +62,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public int m_PunchHitButton = 0;
     public KeyCode m_JumpKeyCode = KeyCode.Space;
 
-
+    [Header("Player Positions")]
     Vector3 m_StartPosition;
     Quaternion m_StartRotation;
 
@@ -102,8 +107,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public float m_HitRecoveryTime = 1.0f;
     private bool m_IsHit = false;
 
+    [Header("Knock Backs")]
     private float m_pushForce = 10.0f;
-
     private CharacterController characterController;
     private Vector3 knockbackDirection;
     private float knockbackForce = 5.0f; 
@@ -669,6 +674,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         UIDeadCanva.SetActive(true);
         m_Animator.SetBool("IsDead", false);
         LifeImage.fillAmount = 1.0f;
+        GameManager.GetGameManager().RestartGame();
         //m_CharacterController.enabled = true;
     }
 
