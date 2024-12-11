@@ -467,15 +467,29 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             hit.rigidbody.AddForceAtPosition(-hit.normal * m_BridgeForce, hit.point);
         }
+        else if (hit.gameObject.CompareTag("Deadzone"))
+        {
+            m_Animator.SetBool("IsDead", true);
+            StartCoroutine(RestartGameWithDelay());
+        }
     }
 
 
     public void UpdateLife()
     {
-        // Reducir la vida
-        LifeImage.fillAmount -= 0.125f;
 
-        // Cambiar color según la cantidad de vida restante
+        LifeImage.fillAmount -= 0.125f;
+        CheckLifeColor();
+
+        if (LifeImage.fillAmount == 0)
+        {
+            m_Animator.SetBool("IsDead", true);
+            StartCoroutine(RestartGameWithDelay());
+        }
+        ShowAnimation();
+    }
+    private void CheckLifeColor()
+    {
         if (LifeImage.fillAmount <= 0.75f)
         {
             LifeImage.color = Color.blue;
@@ -488,17 +502,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             LifeImage.color = Color.red;
         }
-        if (LifeImage.fillAmount == 0)
-        {
-            m_Animator.SetBool("IsDead", true);
-            StartCoroutine(RestartGameWithDelay());
-        }
-        ShowAnimation();
     }
-
     private IEnumerator RestartGameWithDelay()
     {
-        yield return new WaitForSeconds(2f); // wait 3 segundos 
+        yield return new WaitForSeconds(2f); 
         RestartGame();
     }
     void ShowAnimation()
@@ -532,6 +539,13 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             {
                 AttachElevator(other);
             }
+        }
+        if (other.CompareTag("Star"))
+        {
+            LifeImage.fillAmount += 0.125f;
+            CheckLifeColor();
+            other.gameObject.SetActive(false);
+            ShowAnimation();
         }
 
         if (other.CompareTag("Goomba"))

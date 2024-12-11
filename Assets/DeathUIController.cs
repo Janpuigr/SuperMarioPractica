@@ -5,22 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class DeathUIController : MonoBehaviour
 {
-
+    static public Animator m_Animator;
     // Start is called before the first frame update
     public GameObject m_DeathUi;
 
     void Start()
     {
+        m_Animator = GetComponent<Animator>();
         m_DeathUi.SetActive(false);
-    }
-    private void OnDestroy()
-    {
-
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     private void OnEnable()
@@ -40,8 +32,10 @@ public class DeathUIController : MonoBehaviour
 
     public void RestartGame()
     {
+        m_Animator.SetBool("IsDead", false);
         Time.timeScale = 1f;
         m_DeathUi.SetActive(false);
+
     }
 
 }
