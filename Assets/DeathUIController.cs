@@ -40,12 +40,9 @@ public class DeathUIController : MonoBehaviour
 
     public void RestartGame()
     {
-        MarioController.m_Animator.SetBool("IsDead", false);
-        m_DeathUi.SetActive(false);
-        Time.timeScale = 1f;
         m_DeathUi.SetActive(false);
         Debug.Log("RESTART GAME");
-        MarioController.m_Animator.SetBool("IsDead", false);
+        MarioController.m_CharacterController.enabled = true;
     }
 
 }

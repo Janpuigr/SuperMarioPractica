@@ -25,7 +25,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public AnimationClip m_IdleAnimationClip;
     public AnimationClip m_ShowAnimationClip;
     GameManager m_GameManager;
-    CharacterController m_CharacterController;
+    public static CharacterController m_CharacterController;
     static public Animator m_Animator;
     public Camera m_Camera;
     public float m_HorizontalSpeed = 0.0f;
@@ -672,7 +672,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         UIDeadCanva.SetActive(true);
         m_Animator.SetBool("IsDead", false);
         LifeImage.fillAmount = 1.0f;
-        m_CharacterController.enabled = true;
+        //m_CharacterController.enabled = true;
     }
 
 
