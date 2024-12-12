@@ -7,8 +7,9 @@ using System;
 
 public class MarioController : MonoBehaviour, IRestartGameElement
 {
-    AudioSource m_AudioSource;
+    public static AudioSource m_AudioSource;
     [SerializeField] private AudioClip m_CoinSound;
+    [SerializeField] private AudioClip m_DeadScreenSound;
     public enum TpunchType
     {
         RIGHT_HAND = 0,
@@ -528,6 +529,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     private IEnumerator RestartGameWithDelay()
     {
+        m_AudioSource.Stop();
+        m_AudioSource.PlayOneShot(m_DeadScreenSound);
         m_CharacterController.enabled = false;
         yield return new WaitForSeconds(2f); 
         RestartGame();

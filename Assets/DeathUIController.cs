@@ -47,6 +47,7 @@ public class DeathUIController : MonoBehaviour
             Debug.Log("RESTART GAME");
             MarioController.m_CharacterController.enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
+            MarioController.m_AudioSource.Play();
         }
 
     }
