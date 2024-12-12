@@ -7,9 +7,17 @@ using System;
 
 public class MarioController : MonoBehaviour, IRestartGameElement
 {
+    [Header("Audio")]
     public static AudioSource m_AudioSource;
     [SerializeField] private AudioClip m_CoinSound;
     [SerializeField] private AudioClip m_DeadScreenSound;
+    [SerializeField] private AudioClip m_Jump1Sound;
+    [SerializeField] private AudioClip m_Jump2Sound;
+    [SerializeField] private AudioClip m_Jump3Sound;
+    [SerializeField] private AudioClip m_PunchSound;
+    [SerializeField] private AudioClip m_HitSound;
+
+
     public enum TpunchType
     {
         RIGHT_HAND = 0,
@@ -246,8 +254,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             m_CanJump = true;
         }
-
-        if (Input.GetKeyDown(m_JumpKeyCode) && CanJump())
+        
+        if (Input.GetKeyDown(m_JumpKeyCode) && CanJump() && m_CharacterController.enabled == true)
         {
             HandleJump();
         }
@@ -369,15 +377,18 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             jumpForce *= m_SecondJumpMultiplier;
             m_Animator.SetInteger("JumpsCombo", 2);
+            m_AudioSource.PlayOneShot(m_Jump2Sound);
         }
         else if (m_JumpCount == 2)
         {
             jumpForce *= m_ThirdJumpMultiplier;
             m_Animator.SetInteger("JumpsCombo", 3);
+            m_AudioSource.PlayOneShot(m_Jump3Sound);
         }
         else
         {
             m_Animator.SetInteger("JumpsCombo", 1);
+            m_AudioSource.PlayOneShot(m_Jump1Sound);
         }
 
         m_VerticalSpeed = jumpForce;
@@ -419,7 +430,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void UpdatePunch()
     {
-        if(Input.GetMouseButtonDown(m_PunchHitButton)&& CanPunch())
+        if(Input.GetMouseButtonDown(m_PunchHitButton)&& CanPunch() && m_CharacterController.enabled == true)
         {
             PunchCombo();
         }
@@ -446,6 +457,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_CurrentPunchId = 0;
         m_lastPunchTime = Time.time;
         m_Animator.SetInteger("PunchCombo", m_CurrentPunchId);
+        m_AudioSource.PlayOneShot(m_PunchSound);
     }
 
     public void EnableHitCollider(TpunchType PunchType, bool Active)
@@ -473,19 +485,21 @@ public class MarioController : MonoBehaviour, IRestartGameElement
                 hit.gameObject.GetComponent<GoombaController>().Kill();
                 m_VerticalSpeed = m_killJumpVerticalSpeed;
             }
-            else
-            {
-                
-                knockbackDirection = (transform.position - hit.transform.position).normalized;
-                knockbackDirection.y = 0; 
-
-                
-                knockbackTimer = knockbackDuration;
-
-                
-                UpdateLife();
-                Debug.Log("Mario fue golpeado por Goomba.");
-            }
+            //else
+            //{
+            //    Debug.Log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZ LLEGO HAGO ALGO");
+            //
+            //    knockbackDirection = (transform.position - hit.transform.position).normalized;
+            //    knockbackDirection.y = 0; 
+            //
+            //    
+            //    knockbackTimer = knockbackDuration;
+            //
+            //    
+            //    UpdateLife();
+            //    Debug.Log("Mario fue golpeado por Goomba.");
+            //    
+            //}
         }
         else if (hit.gameObject.CompareTag("Bridge"))
         {
@@ -583,7 +597,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
         if (other.CompareTag("Goomba"))
         {
-           
+            m_AudioSource.PlayOneShot(m_HitSound);
             UpdateLife();
 
             
@@ -600,7 +614,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
                 pushDirection.Normalize();
 
                
-                animator.SetTrigger("Hit");
+                //animator.SetTrigger("Hit");
 
                 
                 pushBackTime = 0.5f;
