@@ -25,7 +25,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public Image LifeImage;
 
     [Header("Vidas")]
-    public int m_vidasInt=3;
+    public static int m_vidasInt=3;
     public Text m_VidasText;
 
     [Header("Animations")]

@@ -40,10 +40,13 @@ public class DeathUIController : MonoBehaviour
 
     public void RestartGame()
     {
+        if (MarioController.m_vidasInt > 0)
+        {
+            m_DeathUi.SetActive(false);
+            Debug.Log("RESTART GAME");
+            MarioController.m_CharacterController.enabled = true;
+        }
 
-        m_DeathUi.SetActive(false);
-        Debug.Log("RESTART GAME");
-        MarioController.m_CharacterController.enabled = true;
     }
 
 }
