@@ -7,6 +7,8 @@ using System;
 
 public class MarioController : MonoBehaviour, IRestartGameElement
 {
+    AudioSource m_AudioSource;
+    [SerializeField] private AudioClip m_CoinSound;
     public enum TpunchType
     {
         RIGHT_HAND = 0,
@@ -134,6 +136,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Start()
     {
+        m_AudioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
         m_VidasText.text = ""+m_vidasInt;
         m_Animator.fireEvents = false;
@@ -569,6 +572,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             CheckLifeColor();
             other.gameObject.SetActive(false);
             ShowAnimation();
+        }
+        if (other.CompareTag("Coin"))
+        {
+            m_AudioSource.PlayOneShot(m_CoinSound);
         }
 
         if (other.CompareTag("Goomba"))

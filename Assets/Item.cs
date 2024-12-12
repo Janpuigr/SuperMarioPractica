@@ -9,7 +9,6 @@ public class Item : MonoBehaviour, IRestartGameElement
 	{
 		if (other.CompareTag("Player"))
 		{
-
 			DependencyInjector.GetDependency<IScoreManager>().AddPoints(1);
 			gameObject.SetActive(false);
 		}
