@@ -24,6 +24,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public static Action OnPlayerDeath;
     public Image LifeImage;
 
+    [Header("Vidas")]
+    public int m_vidasInt=3;
+    public Text m_VidasText;
+
     [Header("Animations")]
     public Animation m_Animation;
     public AnimationClip m_IdleAnimationClip;
@@ -130,6 +134,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Start()
     {
+        m_VidasText.text = ""+m_vidasInt;
         m_Animator.fireEvents = false;
         LifeImage.fillAmount = 1f;
         m_LeftHandPunchHitCollider.gameObject.SetActive(false);
@@ -143,6 +148,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Update()
     {
+        UpdateLifes();
         if (IsGrounded() && m_VerticalSpeed <= 0.0f)
         {
             m_LastLandTime = Time.time; 
@@ -306,7 +312,14 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             }
         }
     }
-
+    void UpdateLifes()
+    {
+        m_VidasText.text = "" + m_vidasInt;
+    }
+    void LoseLife()
+    {
+        m_vidasInt -= 1;
+    }
     bool IsTouchingWall()
     {
         return Physics.Raycast(transform.position, transform.right, 1f, m_WallLayer) ||
@@ -513,6 +526,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         m_CharacterController.enabled = false;
         yield return new WaitForSeconds(2f); 
         RestartGame();
+        LoseLife();
         GameManager.GetGameManager().RestartGame();
     }
     void ShowAnimation()
