@@ -11,7 +11,7 @@ public class DeathUIController : MonoBehaviour
 
     void Start()
     {
-        m_DeathUi.SetActive(false);
+        HideUI();
     }
     private void OnDestroy()
     {
@@ -35,6 +35,7 @@ public class DeathUIController : MonoBehaviour
 
     public void DisplayUI()
     {
+        Cursor.lockState = CursorLockMode.None;
         m_DeathUi.SetActive(true);
     }
 
@@ -42,11 +43,17 @@ public class DeathUIController : MonoBehaviour
     {
         if (MarioController.m_vidasInt > 0)
         {
-            m_DeathUi.SetActive(false);
+            HideUI();
             Debug.Log("RESTART GAME");
             MarioController.m_CharacterController.enabled = true;
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
+    }
+    void HideUI()
+    {
+        m_DeathUi.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
 }

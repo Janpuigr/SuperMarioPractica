@@ -57,7 +57,7 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        
         m_SeesPlayer = false;
         m_StartPosition = transform.position;
         m_StartRotation = transform.rotation;

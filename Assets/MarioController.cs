@@ -134,6 +134,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         m_VidasText.text = ""+m_vidasInt;
         m_Animator.fireEvents = false;
         LifeImage.fillAmount = 1f;
@@ -151,7 +152,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         UpdateLifes();
         if (IsGrounded() && m_VerticalSpeed <= 0.0f)
         {
-            m_LastLandTime = Time.time; 
+            m_LastLandTime = Time.time;
+            m_Animator.SetBool("Falling", false);
         }
         Vector3 l_Forward = m_Camera.transform.forward;
         Vector3 l_Right = m_Camera.transform.right;
@@ -687,6 +689,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             transform.rotation = m_CurrentCheckpoint.m_RespawnPosition.rotation;
         }
         UIDeadCanva.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
         m_Animator.SetBool("IsDead", false);
         LifeImage.fillAmount = 1.0f;
 
