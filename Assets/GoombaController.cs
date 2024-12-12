@@ -36,6 +36,10 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
             retreatDirection.y = 0; 
             transform.position += retreatDirection * retreatDistance;
         }
+        if (other.CompareTag("MarioPunch"))
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private IEnumerator AttackCooldownRoutine()

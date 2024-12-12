@@ -11,6 +11,7 @@ TagManager:
   - Coin
   - Deadzone
   - Star
+  - MarioPunch
   layers:
   - Default
   - TransparentFX
