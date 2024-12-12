@@ -513,6 +513,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         m_CharacterController.enabled = false;
         yield return new WaitForSeconds(2f); 
         RestartGame();
+        GameManager.GetGameManager().RestartGame();
     }
     void ShowAnimation()
     {
@@ -674,10 +675,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         UIDeadCanva.SetActive(true);
         m_Animator.SetBool("IsDead", false);
         LifeImage.fillAmount = 1.0f;
-        GameManager.GetGameManager().RestartGame();
+
+        //GameManager.GetGameManager().RestartGame();
         //m_CharacterController.enabled = true;
     }
-
 
     public void Die()
     {
