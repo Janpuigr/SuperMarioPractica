@@ -2818,7 +2818,7 @@ MonoBehaviour:
   m_WallJumpForce: 7
   m_WallLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_HitRecoveryTime: 1
 --- !u!114 &975998789
 MonoBehaviour:
