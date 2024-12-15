@@ -451,7 +451,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_CurrentPunchId = (m_CurrentPunchId + 1);
             if (m_CurrentPunchId >= 3)
                 m_CurrentPunchId = 0;
-                //m_CurrentPunchId=(m_CurrentPunchId+1)%3;
+            //m_CurrentPunchId=(m_CurrentPunchId+1)%3;
+            m_AudioSource.PlayOneShot(m_PunchSound);
         }
         else
             m_CurrentPunchId = 0;

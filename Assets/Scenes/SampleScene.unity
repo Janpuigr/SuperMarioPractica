@@ -479,8 +479,8 @@ HingeJoint:
   m_ExtendedLimits: 0
   m_UseAcceleration: 0
   m_Limits:
-    min: -32.57206
-    max: 15.8395
+    min: -25.197512
+    max: 17.377022
     bounciness: 0
     bounceMinVelocity: 0.09
     contactDistance: 0
@@ -794,7 +794,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2177226956080093877, guid: 0ccd8cf578a3b5446a70e092dcdf1ae6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.78
+      value: 3.53
       objectReference: {fileID: 0}
     - target: {fileID: 2177226956080093877, guid: 0ccd8cf578a3b5446a70e092dcdf1ae6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3394,7 +3394,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3d73cd888cef7114c9aaa8793874472a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 847f30aaa53b1cd4eaf4de32281b2b79, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.359
   m_Pitch: 1
@@ -5063,7 +5063,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2177226956080093877, guid: 0ccd8cf578a3b5446a70e092dcdf1ae6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.89
+      value: 3.64
       objectReference: {fileID: 0}
     - target: {fileID: 2177226956080093877, guid: 0ccd8cf578a3b5446a70e092dcdf1ae6, type: 3}
       propertyPath: m_LocalPosition.z
