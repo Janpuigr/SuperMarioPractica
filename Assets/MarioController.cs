@@ -535,6 +535,11 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_Animator.SetBool("IsDead", true);
             StartCoroutine(RestartGameWithDelay());
         }
+        if (hit.gameObject.CompareTag("KoopaShell"))
+        {
+            hit.rigidbody.velocity = transform.forward * m_DetachObjectForce;
+        }
+        
     }
 
 

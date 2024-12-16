@@ -939,7 +939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1201fa3a648b3a4f8d99058c08ad5a0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.121
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1201fa3a648b3a4f8d99058c08ad5a0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1039,7 +1039,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 99308714}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 0e4e395ab32bd66469a07b76d22342f2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -5052,6 +5052,10 @@ PrefabInstance:
     - target: {fileID: 400000, guid: acc36eee311f0dd428f5959c5f4b3d97, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6400000, guid: acc36eee311f0dd428f5959c5f4b3d97, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
