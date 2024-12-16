@@ -1952,7 +1952,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DeathUi: {fileID: 259785291}
-  m_ExitButton: {fileID: 2027902590}
 --- !u!114 &328269748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3674,7 +3673,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 63
+    m_Bits: 2111
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3722,7 +3721,7 @@ MonoBehaviour:
   m_Pitchspeed: 360
   m_layerMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 2048
   m_OffsetHit: 0.1
   m_SmoothTime: 0.5
 --- !u!1 &975998783 stripped
@@ -5133,7 +5132,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: acc36eee311f0dd428f5959c5f4b3d97, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: acc36eee311f0dd428f5959c5f4b3d97, type: 3}
       propertyPath: m_IsActive

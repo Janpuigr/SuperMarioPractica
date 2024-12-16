@@ -612,7 +612,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             Debug.Log("Toco Elevator");
             if (CanAttachElevator(other))
             {
-                AttachElevator(other);
+                 AttachElevator(other);
             }
         }
         if (other.CompareTag("Star"))
