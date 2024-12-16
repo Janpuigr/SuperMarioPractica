@@ -94,6 +94,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public LayerMask m_TargetLayersGrab;
     private float m_MaxAttachDistance=10.0f;
     private bool isObjectAttached = false;
+    public GameObject m_AttachAnchor;
 
     [Header("Jump")]
 
@@ -664,7 +665,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     {
         Ray l_Ray = (m_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f)));
 
-        if (Physics.Raycast(transform.position,transform.forward, out RaycastHit l_RaycastHit, m_MaxAttachDistance, m_TargetLayersGrab.value))
+        if (Physics.Raycast(m_AttachAnchor.transform.position, transform.forward, out RaycastHit l_RaycastHit, m_MaxAttachDistance, m_TargetLayersGrab.value))
         {
             Debug.Log("LLEGO");
             if (l_RaycastHit.collider.CompareTag("KoopaShell"))
