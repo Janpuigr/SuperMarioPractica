@@ -669,6 +669,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     void AttachObject(Rigidbody AttachObjectRigidbody)
     {
+        m_Animator.SetBool("IsGrabbingShell", true);
         Debug.Log("LLEGO ATACH OBJECT RIGID");
         m_AttachedObjectRigidBody = AttachObjectRigidbody;
         m_AttachedObjectRigidBody.isKinematic = true;
@@ -679,12 +680,14 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     void DetachObject(float Force)
     {
+        m_Animator.SetBool("IsGrabbingShell", false);
         m_AttachedObjectRigidBody.isKinematic = false;
         m_AttachedObjectRigidBody.transform.SetParent(null);
         m_AttachedObjectRigidBody.velocity = m_AttachTransform.forward * Force;
         m_AttachingObject = false;
         m_AttachedObject = false;
         isObjectAttached = false;
+        m_Animator.SetTrigger("DetachShell");
     }
     void UpdateAttachingObject()
     {
