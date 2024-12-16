@@ -19,6 +19,7 @@ public class KoopaScript : MonoBehaviour, IRestartGameElement
     private Vector3 initialPosition;
     public GameObject m_Shell;
     public GameObject m_Koopa;
+    public bool m_ShellMode;
     // Start is called before the first frame update
 
     private void OnTriggerEnter(Collider other)
@@ -45,6 +46,7 @@ public class KoopaScript : MonoBehaviour, IRestartGameElement
     }
     void Start()
     {
+        m_ShellMode = false;
         m_Shell.SetActive(false);
         m_SeesPlayer = false;
         m_StartPosition = transform.position;
@@ -92,6 +94,7 @@ public class KoopaScript : MonoBehaviour, IRestartGameElement
     }
     public void ActivateShell()
     {
+        m_ShellMode = true;
         m_Shell.SetActive(true);
     }
 }

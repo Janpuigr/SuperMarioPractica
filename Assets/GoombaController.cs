@@ -19,7 +19,7 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
     public float attackCooldown = 2.0f;
     public float retreatDistance = 2.0f; 
     private bool canAttack = true;
-    private Vector3 initialPosition; 
+    private Vector3 initialPosition;
 
 
 
@@ -104,6 +104,7 @@ public class GoombaController : MonoBehaviour,IRestartGameElement
 
     public void Kill()
     {
+
         gameObject.SetActive(false);
     }
 }

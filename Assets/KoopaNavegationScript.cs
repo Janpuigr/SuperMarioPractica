@@ -41,6 +41,10 @@ public class KoopaNavegationScript : MonoBehaviour
         {
             MoveToNextPoint();
         }
+        if (ShellState())
+        {
+            agent.speed = 0.0f;
+        }
     }
 
     void MoveToNextPoint()
@@ -51,5 +55,16 @@ public class KoopaNavegationScript : MonoBehaviour
         agent.destination = points[currentPointIndex].position;
 
         currentPointIndex = (currentPointIndex + 1) % points.Count;
+    }
+    bool ShellState()
+    {
+        if (m_Koopa.m_ShellMode)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

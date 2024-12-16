@@ -81,6 +81,19 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     Vector3 m_StartPosition;
     Quaternion m_StartRotation;
 
+    [Header("Attach Object")]
+    public Transform m_AttachTransform;
+    bool m_AttachingObject;
+    bool m_AttachedObject;
+    Rigidbody m_AttachedObjectRigidBody;
+    public float m_AttachObjectSpeed = 8.0f;
+    public float m_StartDistanceToRotateAttachObject = 2.5f;
+    public float m_DetachObjectForce = 10.0f;
+    Transform m_AttachedObjectPreviousParent;
+    public float m_MinDistanceToAttach = 1.0f;
+    public LayerMask m_TargetLayersGrab;
+    private float m_MaxAttachDistance=10.0f;
+    private bool isObjectAttached = false;
 
     [Header("Jump")]
 
@@ -129,7 +142,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     private float knockbackForce = 5.0f; 
     private float knockbackDuration = 0.2f;
     private float knockbackTimer = 0.0f;
-
+    
 
     private void Awake()
     {
@@ -145,6 +158,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Start()
     {
+        m_AttachingObject = false;
+        m_AttachedObject = false;
         m_AudioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
         m_VidasText.text = ""+m_vidasInt;
@@ -248,8 +263,19 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             m_JumpCount = 0;
         }
+        if (Input.GetKey(KeyCode.E))
+        {
+            Debug.Log("APRIETO E");
+            AttachObject();
 
-        
+        }
+        if (Input.GetKey(KeyCode.R))
+        {
+            Debug.Log("APRIETO E");
+            DetachObject(m_DetachObjectForce);
+
+        }
+
         if (!m_CanJump && IsGrounded() && Time.time - m_LastLandTime > m_LandCooldownTime)
         {
             m_CanJump = true;
@@ -324,6 +350,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
                 characterController.Move(pushDirection * m_GoombaHitForce * Time.deltaTime);
                 pushBackTime -= Time.deltaTime; 
             }
+        }
+        if (m_AttachingObject && m_AttachedObjectRigidBody != null)
+        {
+            UpdateAttachingObject();
         }
     }
     void UpdateLifes()
@@ -625,7 +655,62 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         }
     }
 
+    void AttachObject()
+    {
+        Ray l_Ray = (m_Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.0f)));
 
+        if (Physics.Raycast(transform.position,transform.forward, out RaycastHit l_RaycastHit, m_MaxAttachDistance, m_TargetLayersGrab.value))
+        {
+            Debug.Log("LLEGO");
+            if (l_RaycastHit.collider.CompareTag("KoopaShell"))
+                AttachObject(l_RaycastHit.rigidbody);
+
+        }
+    }
+    void AttachObject(Rigidbody AttachObjectRigidbody)
+    {
+        Debug.Log("LLEGO ATACH OBJECT RIGID");
+        m_AttachedObjectRigidBody = AttachObjectRigidbody;
+        m_AttachedObjectRigidBody.isKinematic = true;
+        m_AttachingObject = true;
+        m_AttachedObject = false;
+        m_AttachedObjectPreviousParent = m_AttachedObjectRigidBody.transform.parent;
+        isObjectAttached = true;
+    }
+    void DetachObject(float Force)
+    {
+        m_AttachedObjectRigidBody.isKinematic = false;
+        m_AttachedObjectRigidBody.transform.SetParent(m_AttachedObjectPreviousParent);
+        m_AttachedObjectRigidBody.velocity = m_AttachTransform.forward * Force;
+        m_AttachingObject = false;
+        m_AttachedObject = false;
+        isObjectAttached = false;
+    }
+    void UpdateAttachingObject()
+    {
+        if (m_AttachingObject)
+        {
+            Vector3 l_Direction = m_AttachTransform.position - m_AttachedObjectRigidBody.position;
+            float l_Distance = l_Direction.magnitude;
+            l_Direction /= l_Distance;
+            float l_Movement = m_AttachObjectSpeed * Time.deltaTime;
+            if (l_Movement >= l_Distance || l_Distance < m_MinDistanceToAttach)
+            {
+                m_AttachedObject = true;
+                m_AttachingObject = false;
+                m_AttachedObjectRigidBody.transform.SetParent(m_AttachTransform);
+                m_AttachedObjectRigidBody.transform.localPosition = Vector3.zero;
+                m_AttachedObjectRigidBody.transform.localRotation = Quaternion.identity;
+            }
+            else
+            {
+                m_AttachedObjectRigidBody.transform.position += l_Movement * l_Direction;
+                float l_Pst = Mathf.Min(1.0f, l_Distance / m_StartDistanceToRotateAttachObject);
+                m_AttachedObjectRigidBody.transform.rotation = Quaternion.Lerp(m_AttachTransform.rotation,
+                    m_AttachedObjectRigidBody.transform.rotation, l_Pst);
+            }
+        }
+    }
     void PerformHit()
     {
         m_IsHit = true;
