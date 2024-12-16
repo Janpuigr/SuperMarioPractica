@@ -2,22 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KoopaShellScript : MonoBehaviour
+public class KoopaShellScript : MonoBehaviour, IRestartGameElement
 {
     public float bounceForce = 100f;
     public float groundThreshold = 0.9f;
     Rigidbody m_RigidBody;
+    Vector3 m_StartPosition;
+    Quaternion m_StartRotation;
+
 
     void Start()
     {
+
+        m_StartPosition = transform.position;
+        m_StartRotation = transform.rotation;
         m_RigidBody = GetComponent<Rigidbody>();
+    }
+    private void Update()
+    {
+
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Goomba"))
-        {
-            collision.gameObject.SetActive(false);
-        }
+
 
         Debug.Log("LLEGO AQUI RARO");
 
@@ -34,4 +41,19 @@ public class KoopaShellScript : MonoBehaviour
             m_RigidBody.AddForce(bounceDirection * bounceForce, ForceMode.Impulse);
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Goomba"))
+        {
+            other.gameObject.SetActive(false);
+        }
+    }
+    public void RestartGame()
+    {
+        transform.position = m_StartPosition;
+        transform.rotation = m_StartRotation;
+
+
+    }
+
 }

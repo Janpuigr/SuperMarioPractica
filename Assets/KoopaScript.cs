@@ -46,6 +46,7 @@ public class KoopaScript : MonoBehaviour, IRestartGameElement
     }
     void Start()
     {
+        m_Shell.transform.SetParent(m_Koopa.transform);
         m_ShellMode = false;
         m_Shell.SetActive(false);
         m_SeesPlayer = false;
@@ -82,15 +83,23 @@ public class KoopaScript : MonoBehaviour, IRestartGameElement
     public void RestartGame()
     {
         gameObject.SetActive(true);
+        m_Koopa.SetActive(true);
         characterController.enabled = false;
         transform.position = m_StartPosition;
         transform.rotation = m_StartRotation;
         characterController.enabled = true;
+        m_ShellMode = false;
+        m_Shell.SetActive(false);
+        m_Shell.transform.SetParent(m_Koopa.transform);
+        m_Shell.transform.position = m_StartPosition;
+
     }
     public void Kill()
     {
+        m_Shell.transform.SetParent(null);
         m_Koopa.SetActive(false);
         ActivateShell();
+        gameObject.SetActive(false);
     }
     public void ActivateShell()
     {

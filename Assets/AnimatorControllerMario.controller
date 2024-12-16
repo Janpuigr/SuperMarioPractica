@@ -867,6 +867,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: JumpsCombo
     m_EventTreshold: 2
+  - m_ConditionMode: 2
+    m_ConditionEvent: IsGrabbingShell
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: -7536341271382036948}
   m_DstState: {fileID: 0}
   m_Solo: 0
@@ -895,6 +898,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: JumpsCombo
     m_EventTreshold: 1
+  - m_ConditionMode: 2
+    m_ConditionEvent: IsGrabbingShell
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4330565511565014697}
   m_Solo: 0
@@ -1626,7 +1632,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.43996668
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
@@ -1774,6 +1780,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: JumpsCombo
     m_EventTreshold: 3
+  - m_ConditionMode: 2
+    m_ConditionEvent: IsGrabbingShell
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: -610800134197032340}
   m_DstState: {fileID: 0}
   m_Solo: 0

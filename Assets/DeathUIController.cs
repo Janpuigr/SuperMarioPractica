@@ -12,6 +12,7 @@ public class DeathUIController : MonoBehaviour
     void Start()
     {
         HideUI();
+        
     }
     private void OnDestroy()
     {
@@ -37,6 +38,11 @@ public class DeathUIController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         m_DeathUi.SetActive(true);
+        if (MarioController.m_vidasInt == 0)
+        {
+            
+        }
+            
     }
 
     public void RestartGame()
@@ -50,6 +56,13 @@ public class DeathUIController : MonoBehaviour
             MarioController.m_AudioSource.Play();
         }
 
+    }
+    public void ExitGameButton()
+    {
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
     void HideUI()
     {
