@@ -680,7 +680,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     void DetachObject(float Force)
     {
         m_AttachedObjectRigidBody.isKinematic = false;
-        m_AttachedObjectRigidBody.transform.SetParent(m_AttachedObjectPreviousParent);
+        m_AttachedObjectRigidBody.transform.SetParent(null);
         m_AttachedObjectRigidBody.velocity = m_AttachTransform.forward * Force;
         m_AttachingObject = false;
         m_AttachedObject = false;

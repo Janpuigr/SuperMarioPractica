@@ -991,6 +991,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a1201fa3a648b3a4f8d99058c08ad5a0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 99308716}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a1201fa3a648b3a4f8d99058c08ad5a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 99308717}
   m_SourcePrefab: {fileID: 100100000, guid: a1201fa3a648b3a4f8d99058c08ad5a0, type: 3}
 --- !u!4 &99308713 stripped
 Transform:
@@ -1027,7 +1030,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!135 &99308716
 SphereCollider:
@@ -1050,6 +1053,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.38
   m_Center: {x: 0, y: 0.44, z: 0}
+--- !u!114 &99308717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99308714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 635a435bda260d543832575aca22e00b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &100483006
 PrefabInstance:
   m_ObjectHideFlags: 0
