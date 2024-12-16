@@ -143,7 +143,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     private float knockbackForce = 5.0f; 
     private float knockbackDuration = 0.2f;
     private float knockbackTimer = 0.0f;
-    
+    private bool m_IsGrabbed;
 
     private void Awake()
     {
@@ -159,6 +159,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Start()
     {
+        m_IsGrabbed = false;
         m_AttachingObject = false;
         m_AttachedObject = false;
         m_AudioSource = GetComponent<AudioSource>();
@@ -270,7 +271,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             AttachObject();
 
         }
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKey(KeyCode.R) && isObjectAttached == true)
         {
             Debug.Log("APRIETO E");
             DetachObject(m_DetachObjectForce);
@@ -683,6 +684,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         m_AttachedObject = false;
         m_AttachedObjectPreviousParent = m_AttachedObjectRigidBody.transform.parent;
         isObjectAttached = true;
+
     }
     void DetachObject(float Force)
     {
