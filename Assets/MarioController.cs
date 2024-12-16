@@ -482,25 +482,19 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             if (IsUpperHit(hit.transform))
             {
-               
+                Debug.Log("LLEGO A DAR KOOPA");
                 hit.gameObject.GetComponent<GoombaController>().Kill();
                 m_VerticalSpeed = m_killJumpVerticalSpeed;
             }
-            //else
-            //{
-            //    Debug.Log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZ LLEGO HAGO ALGO");
-            //
-            //    knockbackDirection = (transform.position - hit.transform.position).normalized;
-            //    knockbackDirection.y = 0; 
-            //
-            //    
-            //    knockbackTimer = knockbackDuration;
-            //
-            //    
-            //    UpdateLife();
-            //    Debug.Log("Mario fue golpeado por Goomba.");
-            //    
-            //}
+        }
+        if (hit.gameObject.CompareTag("Koopa"))
+        {
+            if (IsUpperHit(hit.transform))
+            {
+
+                hit.gameObject.GetComponent<KoopaScript>().Kill();
+                m_VerticalSpeed = m_killJumpVerticalSpeed;
+            }
         }
         else if (hit.gameObject.CompareTag("Bridge"))
         {
@@ -596,7 +590,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_AudioSource.PlayOneShot(m_CoinSound);
         }
 
-        if (other.CompareTag("Goomba"))
+        if (other.CompareTag("Goomba")|| other.CompareTag("Koopa"))
         {
             m_AudioSource.PlayOneShot(m_HitSound);
             UpdateLife();

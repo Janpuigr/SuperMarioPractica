@@ -12,6 +12,7 @@ TagManager:
   - Deadzone
   - Star
   - MarioPunch
+  - Koopa
   layers:
   - Default
   - TransparentFX
