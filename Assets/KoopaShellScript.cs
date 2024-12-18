@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class KoopaShellScript : MonoBehaviour, IRestartGameElement
 {
+    public AudioSource m_ShellAudioSource;
     public float bounceForce = 100f;
     public float groundThreshold = 0.9f;
     Rigidbody m_RigidBody;
     Vector3 m_StartPosition;
     Quaternion m_StartRotation;
-
+    MarioController m_Mario;
 
     void Start()
     {
-
+        m_ShellAudioSource = GetComponent<AudioSource>();
+        m_Mario = GetComponent<MarioController>();
         m_StartPosition = transform.position;
         m_StartRotation = transform.rotation;
         m_RigidBody = GetComponent<Rigidbody>();
@@ -24,9 +26,6 @@ public class KoopaShellScript : MonoBehaviour, IRestartGameElement
     }
     private void OnCollisionEnter(Collision collision)
     {
-
-
-        Debug.Log("LLEGO AQUI RARO");
 
         Vector3 normal = collision.contacts[0].normal;
         if (Vector3.Dot(normal, Vector3.up) > groundThreshold)
@@ -46,6 +45,10 @@ public class KoopaShellScript : MonoBehaviour, IRestartGameElement
         if (other.CompareTag("Goomba"))
         {
             other.gameObject.SetActive(false);
+        }
+        if (other.CompareTag("Coin"))
+        {
+            m_ShellAudioSource.Play();
         }
     }
     public void RestartGame()

@@ -7,7 +7,7 @@ public class Item : MonoBehaviour, IRestartGameElement
 	}
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.CompareTag("Player"))
+		if (other.CompareTag("Player") || other.CompareTag("KoopaShell"))
 		{
 			DependencyInjector.GetDependency<IScoreManager>().AddPoints(1);
 			gameObject.SetActive(false);

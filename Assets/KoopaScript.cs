@@ -8,6 +8,7 @@ public class KoopaScript : MonoBehaviour, IRestartGameElement
     Vector3 m_StartPosition;
     Quaternion m_StartRotation;
     public GameObject m_Player;
+    MarioController m_Mario;
     public LayerMask m_SigthLayerMask;
     public float m_ConeAngle = 60f;
     public float m_MaxDistanceToSeePlayer = 20.0f;
@@ -21,7 +22,6 @@ public class KoopaScript : MonoBehaviour, IRestartGameElement
     public GameObject m_Koopa;
     public bool m_ShellMode;
     // Start is called before the first frame update
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && canAttack)
@@ -39,6 +39,11 @@ public class KoopaScript : MonoBehaviour, IRestartGameElement
             m_Koopa.SetActive(false);
             Kill();
         }
+        if (other.CompareTag("KoopaShell"))
+        {
+            FullKill();
+        }
+
     }
     private void Awake()
     {
@@ -99,6 +104,10 @@ public class KoopaScript : MonoBehaviour, IRestartGameElement
         m_Shell.transform.SetParent(null);
         m_Koopa.SetActive(false);
         ActivateShell();
+        gameObject.SetActive(false);
+    }
+    public void FullKill()
+    {
         gameObject.SetActive(false);
     }
     public void ActivateShell()
