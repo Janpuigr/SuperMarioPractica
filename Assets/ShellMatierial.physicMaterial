@@ -9,6 +9,6 @@ PhysicMaterial:
   m_Name: ShellMatierial
   dynamicFriction: 0.9
   staticFriction: 0.75
-  bounciness: 0
+  bounciness: 1
   frictionCombine: 1
-  bounceCombine: 3
+  bounceCombine: 1
