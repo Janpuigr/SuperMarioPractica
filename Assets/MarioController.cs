@@ -159,6 +159,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Start()
     {
+        
         m_IsGrabbed = false;
         m_AttachingObject = false;
         m_AttachedObject = false;
