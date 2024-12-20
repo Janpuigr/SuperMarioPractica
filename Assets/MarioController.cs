@@ -72,7 +72,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public GameObject m_RightHandPunchHitCollider;
     public GameObject m_RightFootKickHitCollider;
 
-
+    private float m_gravityScale = 0.02f;
     [Header("Input")]
     public KeyCode m_LeftKeyCode = KeyCode.A;
     public KeyCode m_RightKeyCode = KeyCode.D;
@@ -251,6 +251,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         }
 
         Debug.Log(IsTouchingWall());
+        Debug.Log(m_VerticalSpeed);
 
         float l_Speed = 0.0f;
 
@@ -298,12 +299,11 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             m_CanJump = true;
         }
-        
-        if (Input.GetKeyDown(m_JumpKeyCode) && CanJump() && m_CharacterController.enabled == true)
+
+        if (Input.GetKeyDown(m_JumpKeyCode) && CanJump() && m_CharacterController.enabled == true && !m_Animator.GetBool("SpecialIdle"))
         {
             HandleJump();
         }
-
         l_Movement.Normalize();
         l_Movement = l_Movement * l_Speed * Time.deltaTime;
 
@@ -313,9 +313,20 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
         CollisionFlags l_CollisionFlags = m_CharacterController.Move(l_Movement);
         if ((l_CollisionFlags & CollisionFlags.Below) != 0 && m_VerticalSpeed < 0.0f)
+        {
             m_Animator.SetBool("Falling", false);
+        }
         else
+        {
             m_Animator.SetBool("Falling", true);
+            if (IsTouchingWall())
+            {
+                Debug.Log("LLEGGGGOOOOOOOOOOO");
+                m_VerticalSpeed += Physics.gravity.y * m_gravityScale * Time.deltaTime;
+            }
+
+        }
+            
 
         if (((l_CollisionFlags & CollisionFlags.Below) != 0 && m_VerticalSpeed < 0.0f) ||
                 (l_CollisionFlags & CollisionFlags.Above) != 0 && m_VerticalSpeed > 0.0f)
@@ -334,6 +345,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
         if (!IsGrounded() && Input.GetKeyDown(m_JumpKeyCode) && IsTouchingWall())
         {
+
             PerformWallJump();
         }
 
@@ -384,10 +396,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     bool IsTouchingWall()
     {
-        return Physics.Raycast(m_AttachAnchor.transform.position, transform.right, 1f, m_WallLayer) ||
-               Physics.Raycast(m_AttachAnchor.transform.position, -transform.right, 1f, m_WallLayer)||
-               Physics.Raycast(m_AttachAnchor.transform.position, transform.forward, 1f, m_WallLayer) ||
-               Physics.Raycast(m_AttachAnchor.transform.position, -transform.forward, 1f, m_WallLayer);
+        return Physics.Raycast(m_AttachAnchor.transform.position, transform.right, 0.5f, m_WallLayer) ||
+               Physics.Raycast(m_AttachAnchor.transform.position, -transform.right, 0.5f, m_WallLayer)||
+               Physics.Raycast(m_AttachAnchor.transform.position, transform.forward, 0.5f, m_WallLayer)||
+               Physics.Raycast(m_AttachAnchor.transform.position, -transform.forward, 0.5f, m_WallLayer);
     }
 
     void PerformWallJump()
