@@ -13,13 +13,10 @@ public class KoopaNavegationScript : MonoBehaviour
     private NavMeshAgent agent;
     private List<Transform> points;
     private int currentPointIndex = 0;
-    Vector3 m_targetPlayerPosition;
-    bool hasSeen;
 
     // Start is called before the first frame update
     void Start()
     {
-        hasSeen = false;
         m_Koopa = GetComponent<KoopaScript>();
         agent = GetComponent<NavMeshAgent>();
 
@@ -33,7 +30,6 @@ public class KoopaNavegationScript : MonoBehaviour
     {
         if (m_Koopa.m_SeesPlayer)
         {
-            hasSeen = true;
             agent.destination = m_Player.position;
             agent.speed = 6.0f;
         }

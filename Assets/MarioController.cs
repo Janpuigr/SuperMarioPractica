@@ -91,7 +91,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     [Header("Attach Object")]
     public Transform m_AttachTransform;
     bool m_AttachingObject;
-    bool m_AttachedObject;
     Rigidbody m_AttachedObjectRigidBody;
     public float m_AttachObjectSpeed = 8.0f;
     public float m_StartDistanceToRotateAttachObject = 2.5f;
@@ -120,7 +119,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     private bool m_CanJump = true;
     public float m_ResetJumpTime = 2.0f;
     public float m_LandCooldownTime = 0.2f;
-    private bool m_IsDead = false; 
     public Transform m_RespawnPoint;
 
     [Header("Elevator")]
@@ -144,13 +142,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     private bool m_IsHit = false;
 
     [Header("Knock Backs")]
-    private float m_pushForce = 10.0f;
     private CharacterController characterController;
     private Vector3 knockbackDirection;
     private float knockbackForce = 5.0f; 
-    private float knockbackDuration = 0.2f;
     private float knockbackTimer = 0.0f;
-    private bool m_IsGrabbed;
 
     public ParticleSystem m_JumpParticle; 
     public ParticleSystem m_HitParticle;  
@@ -173,9 +168,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     void Start()
     {
         m_PunchTimer = 0;
-        m_IsGrabbed = false;
         m_AttachingObject = false;
-        m_AttachedObject = false;
         m_AudioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
         m_VidasText.text = ""+m_vidasInt;
@@ -252,11 +245,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_Animator.SetBool("SpecialIdle", false);
         }
 
-       
-
-        Debug.Log(IsTouchingWall());
-        Debug.Log(m_VerticalSpeed);
-
         float l_Speed = 0.0f;
 
         if (m_HasMovement)
@@ -288,13 +276,11 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         }
         if (Input.GetKey(KeyCode.E))
         {
-            Debug.Log("APRIETO E");
             AttachObject();
 
         }
         if (Input.GetKey(KeyCode.R) && isObjectAttached == true)
         {
-            Debug.Log("APRIETO E");
             DetachObject(m_DetachObjectForce);
 
         }
@@ -325,7 +311,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_Animator.SetBool("Falling", true);
             if (IsTouchingWall())
             {
-                Debug.Log("LLEGGGGOOOOOOOOOOO");
                 m_VerticalSpeed += Physics.gravity.y * m_gravityScale * Time.deltaTime;
             }
 
@@ -577,7 +562,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             if (IsUpperHit(hit.transform))
             {
-                Debug.Log("LLEGO A DAR KOOPA");
                 hit.gameObject.GetComponent<GoombaController>().Kill();
                 m_VerticalSpeed = m_killJumpVerticalSpeed;
             }
@@ -657,7 +641,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         Vector3 l_GoombaDirection = transform.position - GoombaTransform.position;
         l_GoombaDirection.Normalize();
         float l_DotAngle = Vector3.Dot(l_GoombaDirection, Vector3.up);
-        Debug.Log("m_VerticalSpeed" + m_VerticalSpeed);
+
         if (l_DotAngle >= Mathf.Cos(m_MaxAngleNeededToKillGoomba * Mathf.Deg2Rad) && m_VerticalSpeed <= m_MinVerticalSpeedTokillGoomba)
             return true;
         return false;
@@ -672,7 +656,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
         if (other.CompareTag("Elevator"))
         {
-            Debug.Log("Toco Elevator");
             if (CanAttachElevator(other))
             {
                  AttachElevator(other);
@@ -711,14 +694,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
                 
                 pushDirection.Normalize();
-
-               
-                //animator.SetTrigger("Hit");
-
                 
                 pushBackTime = 0.5f;
-
-                Debug.Log("Player pushed back and hit animation played");
             }
 
             
@@ -735,7 +712,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
         if (Physics.Raycast(m_AttachAnchor.transform.position, transform.forward, out RaycastHit l_RaycastHit, m_MaxAttachDistance, m_TargetLayersGrab.value))
         {
-            Debug.Log("LLEGO");
             if (l_RaycastHit.collider.CompareTag("KoopaShell"))
                 AttachObject(l_RaycastHit.rigidbody);
 
@@ -744,11 +720,9 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     void AttachObject(Rigidbody AttachObjectRigidbody)
     {
         m_Animator.SetBool("IsGrabbingShell", true);
-        Debug.Log("LLEGO ATACH OBJECT RIGID");
         m_AttachedObjectRigidBody = AttachObjectRigidbody;
         m_AttachedObjectRigidBody.isKinematic = true;
         m_AttachingObject = true;
-        m_AttachedObject = false;
         m_AttachedObjectPreviousParent = m_AttachedObjectRigidBody.transform.parent;
         isObjectAttached = true;
 
@@ -760,7 +734,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         m_AttachedObjectRigidBody.transform.SetParent(null);
         m_AttachedObjectRigidBody.velocity = m_AttachTransform.forward * Force;
         m_AttachingObject = false;
-        m_AttachedObject = false;
         isObjectAttached = false;
         m_Animator.SetTrigger("DetachShell");
     }
@@ -774,7 +747,6 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             float l_Movement = m_AttachObjectSpeed * Time.deltaTime;
             if (l_Movement >= l_Distance || l_Distance < m_MinDistanceToAttach)
             {
-                m_AttachedObject = true;
                 m_AttachingObject = false;
                 m_AttachedObjectRigidBody.transform.SetParent(m_AttachTransform);
                 m_AttachedObjectRigidBody.transform.localPosition = Vector3.zero;
@@ -874,46 +846,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         Cursor.lockState = CursorLockMode.None;
         m_Animator.SetBool("IsDead", false);
         LifeImage.fillAmount = 1.0f;
-
-        //GameManager.GetGameManager().RestartGame();
-        //m_CharacterController.enabled = true;
     }
-
-    public void Die()
-    {
-        if (m_IsDead) return; 
-
-        m_IsDead = true; 
-        m_Animator.SetBool("IsDead", true); 
-        m_CharacterController.enabled = false; 
-
-        Invoke(nameof(Respawn), 3.0f);
-        UIDeadCanva.SetActive(true);
-    }
-
-
-    private void Respawn()
-    {
-        Debug.Log("Respawning at: " + (m_RespawnPoint != null ? m_RespawnPoint.position.ToString() : "No Respawn Point!"));
-
-        
-        if (m_RespawnPoint != null)
-        {
-            transform.position = m_RespawnPoint.position;
-        }
-        else
-        {
-            Debug.LogWarning("No Respawn Point assigned!");
-        }
-
-        m_Animator.SetBool("IsDead", false); 
-        m_Animator.Play("Blend Tree", 0, 0f);
-
-        m_IsDead = false;
-        m_CharacterController.enabled = true; 
-    }
-
-
 
     public void Step(AnimationEvent _Animation)
     {

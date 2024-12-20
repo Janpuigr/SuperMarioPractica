@@ -50,7 +50,6 @@ public class DeathUIController : MonoBehaviour
         if (MarioController.m_vidasInt > 0)
         {
             HideUI();
-            Debug.Log("RESTART GAME");
             MarioController.m_CharacterController.enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
             MarioController.m_AudioSource.Play();

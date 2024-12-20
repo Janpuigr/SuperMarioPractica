@@ -26,10 +26,6 @@ public class KoopaScript : MonoBehaviour, IRestartGameElement
     {
         if (other.CompareTag("Player") && canAttack)
         {
-
-            Debug.Log("Koopa ataca a Mario.");
-
-
             Vector3 retreatDirection = (transform.position - other.transform.position).normalized;
             retreatDirection.y = 0;
             transform.position += retreatDirection * retreatDistance;
@@ -77,7 +73,6 @@ public class KoopaScript : MonoBehaviour, IRestartGameElement
 
         if (l_Distance < m_MaxDistanceToSeePlayer)
         {
-            //Debug.Log("ESTA CERCA");
             m_SeesPlayer = true;
         }
         else
