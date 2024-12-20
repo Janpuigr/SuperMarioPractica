@@ -50,6 +50,11 @@ public class KoopaShellScript : MonoBehaviour, IRestartGameElement
         {
             m_ShellAudioSource.Play();
         }
+        if (other.CompareTag("Koopa"))
+        {
+            other.gameObject.SetActive(false);
+        }
+            
     }
     public void RestartGame()
     {
