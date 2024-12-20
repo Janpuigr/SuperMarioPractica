@@ -17,6 +17,11 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     [SerializeField] private AudioClip m_PunchSound;
     [SerializeField] private AudioClip m_HitSound;
 
+    public float particleDuration1 = 0.5f;  
+    public float particleDuration2 = 0.7f; 
+    public float particleDuration3 = 1.0f;  
+
+
 
     public enum TpunchType
     {
@@ -145,6 +150,12 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     private float knockbackTimer = 0.0f;
     private bool m_IsGrabbed;
 
+    public ParticleSystem m_JumpParticle; 
+    public ParticleSystem m_HitParticle;  
+    public ParticleSystem m_CoinParticle;
+    public ParticleSystem m_DeathParticle;
+
+
     private void Awake()
     {
         m_CharacterController = GetComponent<CharacterController>();
@@ -178,7 +189,11 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Update()
     {
+
+
         UpdateLifes();
+
+
         if (IsGrounded() && m_VerticalSpeed <= 0.0f)
         {
             m_LastLandTime = Time.time;
@@ -398,13 +413,36 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     void HandleJump()
     {
         m_Animator.SetTrigger("Jump");
+
+        if (m_JumpParticle != null)
+        {
+            ParticleSystem.MainModule mainModule = m_JumpParticle.main;
+
+            m_JumpParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+            if (m_JumpCount == 0)
+            {
+                mainModule.duration = particleDuration1;  
+            }
+            else if (m_JumpCount == 1)
+            {
+                mainModule.duration = particleDuration2;  
+            }
+            else if (m_JumpCount == 2)
+            {
+                mainModule.duration = particleDuration3; 
+            }
+
+            
+            m_JumpParticle.Play();
+        }
+
         if (m_JumpCount >= 3)
         {
             m_JumpCount = 0;
         }
 
         float jumpForce = m_JumpVerticalSpeed;
-
         if (m_JumpCount == 1)
         {
             jumpForce *= m_SecondJumpMultiplier;
@@ -426,8 +464,12 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         m_VerticalSpeed = jumpForce;
         m_LastJumpTime = Time.time;
         m_JumpCount++;
-        m_CanJump = false; 
+        m_CanJump = false;
     }
+
+
+
+
     bool IsGrounded()
     {
         
@@ -631,8 +673,12 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             m_AudioSource.PlayOneShot(m_HitSound);
             UpdateLife();
+            if (m_HitParticle != null)
+            {
+                
+                m_HitParticle.Play();
+            }
 
-            
             CharacterController characterController = GetComponent<CharacterController>();
             Animator animator = GetComponent<Animator>();
 
