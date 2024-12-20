@@ -249,8 +249,9 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             m_Animator.SetBool("SpecialIdle", false); 
         }
-       
-        
+
+        Debug.Log(IsTouchingWall());
+
         float l_Speed = 0.0f;
 
         if (m_HasMovement)
@@ -383,8 +384,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     bool IsTouchingWall()
     {
-        return Physics.Raycast(transform.position, transform.right, 1f, m_WallLayer) ||
-               Physics.Raycast(transform.position, -transform.right, 1f, m_WallLayer);
+        return Physics.Raycast(m_AttachAnchor.transform.position, transform.right, 1f, m_WallLayer) ||
+               Physics.Raycast(m_AttachAnchor.transform.position, -transform.right, 1f, m_WallLayer)||
+               Physics.Raycast(m_AttachAnchor.transform.position, transform.forward, 1f, m_WallLayer) ||
+               Physics.Raycast(m_AttachAnchor.transform.position, -transform.forward, 1f, m_WallLayer);
     }
 
     void PerformWallJump()
