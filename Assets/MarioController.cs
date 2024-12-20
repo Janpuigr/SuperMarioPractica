@@ -35,6 +35,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     private float pushBackTime = 0f;
     public float m_GoombaHitSpeed = 8.0f;
 
+    float m_PunchTimer;
+
     [Header("UI")]
     public GameObject UIDeadCanva;
     public static Action OnPlayerDeath;
@@ -72,7 +74,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     public GameObject m_RightHandPunchHitCollider;
     public GameObject m_RightFootKickHitCollider;
 
-
+    private float m_gravityScale = 0.02f;
     [Header("Input")]
     public KeyCode m_LeftKeyCode = KeyCode.A;
     public KeyCode m_RightKeyCode = KeyCode.D;
@@ -170,6 +172,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Start()
     {
+        m_PunchTimer = 0;
         m_IsGrabbed = false;
         m_AttachingObject = false;
         m_AttachedObject = false;
@@ -249,8 +252,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             m_Animator.SetBool("SpecialIdle", false); 
         }
-       
-        
+
+        Debug.Log(IsTouchingWall());
+        Debug.Log(m_VerticalSpeed);
+
         float l_Speed = 0.0f;
 
         if (m_HasMovement)
@@ -297,12 +302,11 @@ public class MarioController : MonoBehaviour, IRestartGameElement
         {
             m_CanJump = true;
         }
-        
-        if (Input.GetKeyDown(m_JumpKeyCode) && CanJump() && m_CharacterController.enabled == true)
+
+        if (Input.GetKeyDown(m_JumpKeyCode) && CanJump() && m_CharacterController.enabled == true && !m_Animator.GetBool("SpecialIdle"))
         {
             HandleJump();
         }
-
         l_Movement.Normalize();
         l_Movement = l_Movement * l_Speed * Time.deltaTime;
 
@@ -312,9 +316,21 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
         CollisionFlags l_CollisionFlags = m_CharacterController.Move(l_Movement);
         if ((l_CollisionFlags & CollisionFlags.Below) != 0 && m_VerticalSpeed < 0.0f)
+        {
             m_Animator.SetBool("Falling", false);
+        }
         else
+        {
             m_Animator.SetBool("Falling", true);
+            if (IsTouchingWall())
+            {
+                Debug.Log("LLEGGGGOOOOOOOOOOO");
+                m_VerticalSpeed += Physics.gravity.y * m_gravityScale * Time.deltaTime;
+            }
+
+        }
+
+        m_PunchTimer += Time.deltaTime;
 
         if (((l_CollisionFlags & CollisionFlags.Below) != 0 && m_VerticalSpeed < 0.0f) ||
                 (l_CollisionFlags & CollisionFlags.Above) != 0 && m_VerticalSpeed > 0.0f)
@@ -333,6 +349,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
         if (!IsGrounded() && Input.GetKeyDown(m_JumpKeyCode) && IsTouchingWall())
         {
+
             PerformWallJump();
         }
 
@@ -383,8 +400,10 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     }
     bool IsTouchingWall()
     {
-        return Physics.Raycast(transform.position, transform.right, 1f, m_WallLayer) ||
-               Physics.Raycast(transform.position, -transform.right, 1f, m_WallLayer);
+        return Physics.Raycast(m_AttachAnchor.transform.position, transform.right, 0.5f, m_WallLayer) ||
+               Physics.Raycast(m_AttachAnchor.transform.position, -transform.right, 0.5f, m_WallLayer)||
+               Physics.Raycast(m_AttachAnchor.transform.position, transform.forward, 0.5f, m_WallLayer)||
+               Physics.Raycast(m_AttachAnchor.transform.position, -transform.forward, 0.5f, m_WallLayer);
     }
 
     void PerformWallJump()
@@ -504,8 +523,9 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void UpdatePunch()
     {
-        if(Input.GetMouseButtonDown(m_PunchHitButton)&& CanPunch() && m_CharacterController.enabled == true)
+        if(Input.GetMouseButtonDown(m_PunchHitButton)&& CanPunch() && m_CharacterController.enabled == true && m_PunchTimer>0.45)
         {
+            m_PunchTimer = 0;
             PunchCombo();
         }
     }
