@@ -4244,7 +4244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallKickForce: 5
-  wallKickDuration: 0.7
+  wallKickDuration: 0.5
   wallKickHeightMultiplier: 1.5
   wallKickBackwardMultiplier: 1.5
 --- !u!82 &975998791
@@ -9255,7 +9255,7 @@ GameObject:
   - component: {fileID: 2098050599}
   m_Layer: 7
   m_Name: WallKickZone1
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
