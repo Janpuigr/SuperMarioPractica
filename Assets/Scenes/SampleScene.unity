@@ -4225,7 +4225,7 @@ MonoBehaviour:
   m_WallJumpForce: 7
   m_WallLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2048
   m_HitRecoveryTime: 1
   m_JumpParticle: {fileID: 1739330470}
   m_HitParticle: {fileID: 1739330470}
