@@ -234,24 +234,25 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             m_HasMovement = true;
         }
 
-        if (!m_HasMovement)
+        if (!m_HasMovement && !m_Animator.GetBool("Punch"))
         {
-            m_IdleTime += Time.deltaTime; 
+            m_IdleTime += Time.deltaTime;
         }
         else
         {
-            m_IdleTime = 0.0f; 
+            m_IdleTime = 0.0f;
+        }
+
+        if (m_IdleTime >= 10.0f)
+        {
+            m_Animator.SetBool("SpecialIdle", true);
+        }
+        else
+        {
+            m_Animator.SetBool("SpecialIdle", false);
         }
 
        
-        if (m_IdleTime >= 10.0f) 
-        {
-            m_Animator.SetBool("SpecialIdle", true); 
-        }
-        else
-        {
-            m_Animator.SetBool("SpecialIdle", false); 
-        }
 
         Debug.Log(IsTouchingWall());
         Debug.Log(m_VerticalSpeed);
