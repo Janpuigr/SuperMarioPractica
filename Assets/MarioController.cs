@@ -35,6 +35,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
     private float pushBackTime = 0f;
     public float m_GoombaHitSpeed = 8.0f;
 
+    float m_PunchTimer;
+
     [Header("UI")]
     public GameObject UIDeadCanva;
     public static Action OnPlayerDeath;
@@ -170,6 +172,7 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void Start()
     {
+        m_PunchTimer = 0;
         m_IsGrabbed = false;
         m_AttachingObject = false;
         m_AttachedObject = false;
@@ -326,7 +329,8 @@ public class MarioController : MonoBehaviour, IRestartGameElement
             }
 
         }
-            
+
+        m_PunchTimer += Time.deltaTime;
 
         if (((l_CollisionFlags & CollisionFlags.Below) != 0 && m_VerticalSpeed < 0.0f) ||
                 (l_CollisionFlags & CollisionFlags.Above) != 0 && m_VerticalSpeed > 0.0f)
@@ -519,8 +523,9 @@ public class MarioController : MonoBehaviour, IRestartGameElement
 
     void UpdatePunch()
     {
-        if(Input.GetMouseButtonDown(m_PunchHitButton)&& CanPunch() && m_CharacterController.enabled == true)
+        if(Input.GetMouseButtonDown(m_PunchHitButton)&& CanPunch() && m_CharacterController.enabled == true && m_PunchTimer>0.45)
         {
+            m_PunchTimer = 0;
             PunchCombo();
         }
     }
